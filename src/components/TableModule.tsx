@@ -62,7 +62,7 @@ export default function TableModule({ header, tableName }: TableModuleProps) {
 
   return (
     <MaxWidthWrapper className="mt-5">
-      <div className="flex flex-wrap justify-between items-center space-x-2 my-3">
+      {/* <div className="flex flex-wrap justify-between items-center space-x-2 my-3">
         <div className="flex flex-1 space-x-2 max-w-xs items-center w-full mb-2 sm:mb-0">
           <Input
             className="bg-zinc-100 flex-1 border border-stone-300"
@@ -125,6 +125,67 @@ export default function TableModule({ header, tableName }: TableModuleProps) {
               </PopoverContent>
             </Popover>
           </div>
+        </div>
+      </div> */}
+      <div className="flex flex-col space-y-3 my-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between space-x-1">
+        <div className="flex w-full sm:w-auto sm:max-w-xs">
+          <Input
+            className="bg-zinc-100 flex-1 border border-stone-300 rounded-r-none"
+            type="text"
+            placeholder="Search"
+          />
+          <Button className="rounded-l-none" type="submit">
+            <Search />
+          </Button>
+        </div>
+
+        <div className="flex flex-col space-x-1 space-y-2 sm:flex-row sm:space-y-0  ">
+          <Select>
+            <SelectTrigger className="w-full sm:w-[100px] bg-zinc-100 border-stone-300">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="accepted">Accepted</SelectItem>
+              <SelectItem value="not-accepted">Not Accepted</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="date"
+                variant={"outline"}
+                className={cn(
+                  "w-full sm:w-[300px] bg-zinc-100 rounded-md border-stone-300 justify-start text-left font-normal",
+                  !date && "text-muted-foreground"
+                )}
+              >
+                <CalendarFold className="mr-2 h-4 w-4" />
+                {date?.from ? (
+                  date.to ? (
+                    <>
+                      {format(date.from, "LLL dd, y")} -{" "}
+                      {format(date.to, "LLL dd, y")}
+                    </>
+                  ) : (
+                    format(date.from, "LLL dd, y")
+                  )
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                initialFocus
+                mode="range"
+                defaultMonth={date?.from}
+                selected={date}
+                onSelect={setDate}
+                numberOfMonths={2}
+              />
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
       <div className="border border-stone-700 rounded-lg p-1 overflow-hidden">

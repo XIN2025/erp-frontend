@@ -234,7 +234,12 @@ function FormModule<T extends Record<string, any>>({
               );
             }
 
-            if (item.name === "CompanyName" || item.name === "Tags") {
+            if (
+              item.name === "CompanyName" ||
+              item.name === "Tags" ||
+              item.name == "OTType" ||
+              item.name == "Benefits"
+            ) {
               return (
                 <FormField
                   key={item.name}

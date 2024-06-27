@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -9,9 +9,19 @@ import {
 import { usePathname } from "next/navigation";
 import { DropDownMenu } from "@/config";
 import { ScrollArea } from "../ui/scroll-area";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import clsx from "clsx";
 
 interface SidebarDropdownButtonProps {
-  Icon: React.ReactNode;
+  href: string;
+  Icon: React.ComponentType;
   label: string;
   onClick: (href: string) => void;
 }
@@ -19,9 +29,14 @@ interface SidebarDropdownButtonProps {
 function SidebarDropdownButton({
   Icon,
   label,
+  href,
   onClick,
 }: SidebarDropdownButtonProps) {
   const pathname = usePathname();
+
+  const hashref = (pathname: string) => {
+    return pathname.indexOf("href") !== -1;
+  };
 
   const getHeight = (label: string) => {
     const matchingCandidate = DropDownMenu.find(
@@ -32,7 +47,15 @@ function SidebarDropdownButton({
     }
     return 0;
   };
+  const [mounted, setMounted] = useState<boolean>(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   const elements = getHeight(label);
 
   const ScrollAreaHeight =
@@ -40,14 +63,18 @@ function SidebarDropdownButton({
 
   return (
     <div>
-      <Accordion type="multiple" className="w-full">
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="flex items-center">
-            <span className="ml-3 text-blue-600">{Icon}</span>
-            {label}
-          </AccordionTrigger>
-          <AccordionContent>
-            <ScrollArea style={{ height: `${ScrollAreaHeight}px` }}>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <span>
+            <Icon />
+          </span>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="right" align="center" className="w-[270px]">
+          <DropdownMenuItem>
+            <ScrollArea
+              className="max-h-[calc(100vh-10rem)] w-[270px] "
+              style={{ height: `${ScrollAreaHeight}px` }}
+            >
               {DropDownMenu.map((candidates) => {
                 if (candidates.parent === label) {
                   return candidates.DropDownContent.map((candidate) => (
@@ -68,9 +95,9 @@ function SidebarDropdownButton({
                 }
               })}
             </ScrollArea>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

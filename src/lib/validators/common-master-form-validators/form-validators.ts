@@ -24,19 +24,6 @@ export const companyDetailsValidtor = z.object({
 
 export type TcompanyDetailsValidtor = z.infer<typeof companyDetailsValidtor>;
 
-// Gsts: z.array(
-//     z.object({
-//       id: z.string(),
-//       SerialNo: z.number(),
-//       GSTRegNo: z.string().min(1, "GST reg. no. is required!"),
-//       GSTState: z.string().min(1, "GST state is required!"),
-//       GSTAddress: z.string().min(1, "GST address is required!"),
-//       companyDetailsID: z.string().min(1, "Company Name is required!"),
-//     })
-//   ),
-
-// Define the schema for the table data
-
 export const businessUnitValidator = z.object({
   CompanyName: z.string().min(1, "Company Name is required!"),
   BusinessUnit: z.string().min(1, "Buisness Unit is required"),
@@ -65,3 +52,55 @@ export const customerValidator = z.object({
 });
 
 export type TcustomerValidator = z.infer<typeof customerValidator>;
+
+export const employeeMasterValidator = z.object({
+  EmployeeCode: z.string().trim().min(1, "Employee Code is required!"),
+  EmployeeType: z.string().trim().min(1, "Employee Type is required!"),
+  Email: z.string().email("Invalid email format!").optional(),
+  FatherHusbandName: z.string().trim().optional(),
+  DateOfBirth: z.string().optional(),
+  EmployeeFirstName: z.string().trim().optional(),
+  EmployeeLastName: z.string().trim().optional(),
+  Gender: z.string().optional(),
+  Religion: z.string().optional(),
+  MotherTongue: z.string().optional(),
+  PresentAddress: z.string().optional(),
+  PermanentAddress: z.string().optional(),
+  Phone: z.string().optional(),
+  EmergencyContactNumber: z.string().optional(),
+  MaritalStatus: z.string().optional(),
+  IdentificationMark: z.string().optional(),
+  HeightInCM: z.number().optional(),
+  WeightInKG: z.number().optional(),
+  Vision: z.string().optional(),
+  EducationalQualification: z.string().optional(),
+  PastExperience: z.string().optional(),
+  DateOfJoining: z.string().optional(),
+  DateOfExit: z.string().optional(),
+  Designation: z.string().optional(),
+  RoleDescription: z.string().optional(),
+  PfAccountNumber: z.string().optional(),
+  UniversalAccountNumber: z.string().optional(),
+  Esic: z.string().optional(),
+  BankAccountNumber: z.string().optional(),
+  BankName: z.string().optional(),
+  Ifsc: z.string().optional(),
+  Aadhar: z.string().optional(),
+  Pan: z.string().optional(),
+  WagesInRupees: z.number().optional(),
+  OTType: z.string().optional(),
+  Benefits: z.string(),
+  CompanyName: z.string().min(1, "Company Name is required!"),
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TemployeeMasterValidator = z.infer<typeof employeeMasterValidator>;
+
+export const costCenterValidator = z.object({
+  CompanyName: z.string().min(1, "Company Name is required!"),
+  CostCenterName: z.string().min(1, "Cost Center Name is requried! "),
+  ProjectSiteAddress: z.string().min(1, "Project Site Address is requried! "),
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TcostCenterValidator = z.infer<typeof costCenterValidator>;

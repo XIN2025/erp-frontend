@@ -26,7 +26,7 @@ import { apiClient } from "@/lib/utils";
 import {
   TcustomerValidator,
   companyDetailsValidtor,
-} from "@/lib/validators/form-validators";
+} from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 

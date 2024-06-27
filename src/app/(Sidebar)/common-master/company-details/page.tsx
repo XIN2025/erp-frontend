@@ -26,7 +26,7 @@ import { apiClient } from "@/lib/utils";
 import {
   TcompanyDetailsValidtor,
   companyDetailsValidtor,
-} from "@/lib/validators/form-validators";
+} from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -43,6 +43,7 @@ export interface GSTDataItem {
 
 function Page() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [companyDetail, setCompanyDetail] = useState<undefined | []>();
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState<Date>();
   const form = useForm<TcompanyDetailsValidtor>({
@@ -70,8 +71,7 @@ function Page() {
     },
   });
 
-  const { handleSubmit, control } = form;
-
+  console.log("companydetail", companyDetail);
   const [data, setData] = useState<GSTDataItem[]>([
     {
       SerialNo: 1,
@@ -108,8 +108,6 @@ function Page() {
         requestData
       );
       console.log("response", response);
-      console.log("sending toast");
-
       if (response.data.success) {
         await new Promise<void>((resolve) => {
           toast.success("Company Details created successfully!", {
@@ -120,11 +118,25 @@ function Page() {
       } else {
         toast.error("Failed to create Company Details");
       }
-      console.log("toast sent");
     } catch (error) {
       console.log("error", error);
     }
   };
+
+  useEffect(() => {
+    try {
+      const getCompanyDetails = async () => {
+        const response = await apiClient.get(
+          "/commonMaster/companyDetails/allCompanyDetails"
+        );
+        console.log("respiosne", response);
+        setCompanyDetail(response.data.allCompanyDetails);
+      };
+      getCompanyDetails();
+    } catch (error) {
+      console.log("error", error);
+    }
+  }, []);
 
   useEffect(() => {
     setDate(new Date());
@@ -186,7 +198,11 @@ function Page() {
           </Dialog>
         </div>
 
-        <TableModule tableName={PAGENAME} header={commonmaster} />
+        <TableModule
+          data={companyDetail}
+          tableName={PAGENAME}
+          header={commonmaster}
+        />
       </div>
     </MaxWidthWrapper>
   );

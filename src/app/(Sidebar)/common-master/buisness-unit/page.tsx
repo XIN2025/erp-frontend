@@ -24,9 +24,11 @@ import { BusinessUnit } from "@/config/common-master-forms";
 import {
   TbusinessUnitValidator,
   businessUnitValidator,
-} from "@/lib/validators/form-validators";
+} from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { apiClient } from "@/lib/utils";
+import { toast } from "sonner";
 
 const PAGENAME: string = "Buissness Unit";
 
@@ -63,7 +65,22 @@ function Page() {
 
   const onSubmit: SubmitHandler<TbusinessUnitValidator> = async (values) => {
     try {
-      console.log(values);
+      console.log("values", values);
+      const response = await apiClient.post(
+        "/commonMaster/businessUnit/create",
+        values
+      );
+      console.log("response", response);
+      if (response.data.success) {
+        await new Promise<void>((resolve) => {
+          toast.success("Business Unit created successfully!", {
+            onAutoClose: () => resolve(),
+          });
+        });
+        closeDialog();
+      } else {
+        toast.error("Failed to create Business Unit");
+      }
     } catch (error) {
       console.log("error", error);
     }

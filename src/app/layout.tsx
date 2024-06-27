@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
+
 import { Toaster } from "sonner";
+
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import MenuOptions from "@/components/navabar/MenuOptions";
+import Navbar from "@/components/navabar/Navbar";
+import { NextRequest } from "next/server";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -15,14 +22,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const token = cookies().get("token");
+  const userToken = cookies().get("token");
+  console.log("token", token, "user", userToken);
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <main className="relative flex flex-col bg-gray-200 min-h-screen">
-          <div className="bg-gray-200  mb-5 ">
-            <Navbar />
-          </div>
-          {children}
+      <body className={`${inter.className} flex h-screen overflow-hidden`}>
+        <aside className="  shrink-0">{userToken && <MenuOptions />}</aside>
+        <main className="flex flex-col flex-grow overflow-hidden">
+          <header className="w-full">{userToken && <Navbar />}</header>
+          <div className="flex-grow overflow-auto">{children}</div>
         </main>
         <Toaster position="top-center" richColors />
       </body>
