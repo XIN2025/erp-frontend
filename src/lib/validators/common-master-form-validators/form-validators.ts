@@ -18,7 +18,7 @@ export const companyDetailsValidtor = z.object({
   PermanentAccountNumber: z.string().optional(),
   MSME: z.string().optional(),
   MSMEUdyam: z.string().optional(),
-  Status: z.string(),
+
   Tags: z.string(),
 });
 
@@ -47,7 +47,7 @@ export const customerValidator = z.object({
   Website: z.string().min(1, "Website URL is required!"),
   PAN: z.string().min(1, "PAN number is required!"),
   ServiceTaxRegNo: z.string().min(1, "Service Tax Reg No is required!"),
-  CINLLPN: z.string().min(1, "CIN/LLPN number is required!"),
+  CINLLPIN: z.string().min(1, "CIN/LLPIN number is required!"),
   Tags: z.string().min(1, "At least one Tag is required!"),
 });
 
@@ -104,3 +104,39 @@ export const costCenterValidator = z.object({
 });
 
 export type TcostCenterValidator = z.infer<typeof costCenterValidator>;
+
+export const currencyValidator = z.object({
+  CurrencyCode: z.string().min(1, "Currency Code is required!"),
+  CurrencyName: z.string().min(1, "Currency Name is requried! "),
+
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TcurrencyValidator = z.infer<typeof currencyValidator>;
+
+export const warehouseValidators = z.object({
+  CompanyName: z.string().min(1, "Company Name is required!"),
+  CostCenterName: z.string().min(1, "Cost Center Name is requried! "),
+  WarehouseName: z.string().min(1, "Warehouse Name is requried! "),
+  ProjectSiteAddress: z.string().min(1, "Project Site Address is requried! "),
+
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TwarehouseValidators = z.infer<typeof warehouseValidators>;
+
+export const goodsReceiptValidators = z.object({
+  ReceiptCode: z.string().min(1, "Receipt code is required!"),
+  ReceiptDescription: z.string().min(1, "Receipt Description is requried! "),
+});
+
+export type TgoodsReceiptValidators = z.infer<typeof goodsReceiptValidators>;
+export const machineClassValidators = z.object({
+  MachineClassCode: z.string().min(1, "Machine Class Code is required!"),
+  MachineClassDescription: z
+    .string()
+    .min(1, "Machine Class Description is requried! "),
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TmachineClassValidators = z.infer<typeof machineClassValidators>;

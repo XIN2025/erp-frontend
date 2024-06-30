@@ -8,23 +8,30 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
+import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
 function Logout() {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Remove the token cookie
-    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
-    router.push("/auth/signin");
+    try {
+      deleteCookie("token", {
+        path: "/",
+        domain: window.location.hostname,
+      });
+
+      window.location.reload();
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   return (
     <div>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Button onClick={handleLogout} variant="ghost">
               <LogOut className="text-red-500" />
             </Button>

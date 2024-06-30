@@ -15,22 +15,30 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { commonmaster } from "@/config";
-import { FilePlus2 } from "lucide-react";
+
+import { FilePlus2, Loader2, Loader2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import FormModule from "@/components/FormModule";
-import { BusinessUnit } from "@/config/common-master-forms";
+import { BusinessUnit, CompanyDetails } from "@/config/common-master-forms";
+import { ApiError, apiClient } from "@/lib/utils";
 import {
   TbusinessUnitValidator,
   businessUnitValidator,
+  companyDetailsValidtor,
 } from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { apiClient } from "@/lib/utils";
+import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import {
+  BusinessUnitHeaders,
+  CompanyDetailsHeaders,
+} from "@/config/common-master-headers";
+import LoadingDots from "@/components/Loading";
+import { useRouter } from "next/navigation";
 
-const PAGENAME: string = "Buissness Unit";
+const PAGENAME: string = "Business Unit";
 
 export interface GSTDataItem {
   SerialNo: number;
@@ -41,9 +49,13 @@ export interface GSTDataItem {
 }
 
 function Page() {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [businessUnit, setBusinessUnit] = useState<undefined | []>();
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState<Date>();
+  const [currentItemID, setCurrentItemID] = useState<string | undefined>("");
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const form = useForm<TbusinessUnitValidator>({
     resolver: zodResolver(businessUnitValidator),
     defaultValues: {
@@ -53,6 +65,7 @@ function Page() {
       Tags: "",
     },
   });
+
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
 
@@ -60,17 +73,44 @@ function Page() {
     setIsDialogOpen(open);
   };
 
-  const isLoading = form.formState.isLoading;
-  const { handleSubmit, control } = form;
-
-  const onSubmit: SubmitHandler<TbusinessUnitValidator> = async (values) => {
+  const handleUpdate = (
+    id: string,
+    values: TbusinessUnitValidator,
+    gstData?: GSTDataItem[]
+  ) => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const response = await apiClient.put(
+          `/commonMaster/businessUnit/update/${id}`,
+          values
+        );
+        console.log("Response:", response);
+        if (response.data.success) {
+          await new Promise<void>((resolveToast) => {
+            toast.success("Business Unit updated successfully!", {
+              onAutoClose: () => resolveToast(),
+            });
+          });
+          closeDialog();
+          resolve();
+        } else {
+          toast.error("Failed to update Business Unit");
+          reject(new Error("Failed to update Business Unit"));
+        }
+        fetchBusiness();
+      } catch (error) {
+        console.error("Error updating Business Unit:", error);
+        toast.error("An error occurred while updating Business Unit");
+        reject(error);
+      }
+    });
+  };
+  const handleCreate = async (values: TbusinessUnitValidator) => {
     try {
-      console.log("values", values);
       const response = await apiClient.post(
         "/commonMaster/businessUnit/create",
         values
       );
-      console.log("response", response);
       if (response.data.success) {
         await new Promise<void>((resolve) => {
           toast.success("Business Unit created successfully!", {
@@ -78,13 +118,60 @@ function Page() {
           });
         });
         closeDialog();
+        fetchBusiness();
       } else {
         toast.error("Failed to create Business Unit");
       }
     } catch (error) {
       console.log("error", error);
+      toast.error("An error occurred while creating Business Unit");
     }
   };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await apiClient.delete(
+        `/commonMaster/businessUnit/delete/${id}`
+      );
+      if (response.data.success) {
+        await new Promise<void>((resolve) => {
+          toast.success("Business Unit deleted successfully!", {
+            onAutoClose: () => resolve(),
+          });
+        });
+
+        closeDialog();
+        fetchBusiness();
+      } else {
+        toast.error("Failed to delete Business Unit");
+      }
+    } catch (error: unknown) {
+      console.log("error", error);
+      toast.error("An error occurred while deleting Business Unit");
+    }
+  };
+
+  const handleApprove = () => {};
+  const handleReject = () => {};
+
+  const fetchBusiness = async () => {
+    try {
+      setIsloading(true);
+      const response = await apiClient.get(
+        "/commonMaster/businessUnit/allBusinessUnit"
+      );
+      setIsloading(false);
+      console.log("get business unit response", response);
+      setBusinessUnit(response.data.allBusinessUnit);
+    } catch (error) {
+      setIsloading(false);
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBusiness();
+  }, []);
 
   useEffect(() => {
     setDate(new Date());
@@ -98,6 +185,9 @@ function Page() {
     return null;
   }
 
+  if (isLoading) {
+    return <LoadingDots />;
+  }
   return (
     <MaxWidthWrapper className=" max-w-screen-2xl ">
       <h1 className=" text-5xl my-12 tracking-tighter font-bold text-center w-full text-zinc-700">
@@ -109,7 +199,7 @@ function Page() {
             <DialogTrigger>
               <TooltipProvider delayDuration={300}>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <button
                       className="group flex items-center  "
                       onClick={openDialog}
@@ -134,8 +224,7 @@ function Page() {
               </DialogHeader>
               <FormModule<TbusinessUnitValidator>
                 form={form}
-                //@ts-ignore
-                onSubmit={onSubmit}
+                onSubmit={handleCreate}
                 date={date}
                 setDate={setDate}
                 formFields={BusinessUnit}
@@ -144,7 +233,24 @@ function Page() {
           </Dialog>
         </div>
 
-        <TableModule tableName={PAGENAME} header={commonmaster} />
+        <TableModule<TbusinessUnitValidator>
+          data={businessUnit}
+          tableName={PAGENAME}
+          header={BusinessUnitHeaders}
+          includeGSTTable={false}
+          form={form}
+          // onSubmit={handleCreate}
+          onUpdate={handleUpdate}
+          currentItemID={currentItemID}
+          setCurrentItemID={setCurrentItemID}
+          onDelete={handleDelete}
+          // setData={setData}
+          onAprrove={handleApprove}
+          onReject={handleReject}
+          date={date}
+          setDate={setDate}
+          formFields={BusinessUnit}
+        />
       </div>
     </MaxWidthWrapper>
   );

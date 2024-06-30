@@ -15,20 +15,24 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { commonmaster } from "@/config";
+
 import { FilePlus2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import FormModule from "@/components/FormModule";
-import { CompanyDetails, Customer } from "@/config/common-master-forms";
+import LoadingDots from "@/components/Loading";
+import { Customer } from "@/config/common-master-forms";
+import { CustomerHeaders } from "@/config/common-master-headers";
 import { apiClient } from "@/lib/utils";
 import {
   TcustomerValidator,
-  companyDetailsValidtor,
+  customerValidator,
 } from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const PAGENAME: string = "Customer";
 
@@ -41,11 +45,15 @@ export interface GSTDataItem {
 }
 
 function Page() {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [customerData, setCustomerData] = useState<undefined | []>();
   const [mounted, setMounted] = useState(false);
-  const [date, setDate] = useState<Date>();
+
+  const [currentItemID, setCurrentItemID] = useState<string | undefined>("");
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const form = useForm<TcustomerValidator>({
-    resolver: zodResolver(companyDetailsValidtor),
+    resolver: zodResolver(customerValidator),
     defaultValues: {
       CustomerCode: "",
       CustomerName: "",
@@ -56,19 +64,12 @@ function Page() {
       Email: "",
       Website: "",
       PAN: "",
-      CINLLPN: "",
+      CINLLPIN: "",
       Tags: "",
     },
   });
-  const openDialog = () => setIsDialogOpen(true);
-  const closeDialog = () => setIsDialogOpen(false);
 
-  const handleDialogChange = (open: boolean) => {
-    setIsDialogOpen(open);
-  };
-  const { handleSubmit, control } = form;
-
-  const [data, setData] = useState<GSTDataItem[]>([
+  const [gstData, setGSTData] = useState<GSTDataItem[]>([
     {
       SerialNo: 1,
       GSTRegNo: " ",
@@ -76,17 +77,165 @@ function Page() {
       GSTAddress: " ",
     },
   ]);
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
 
-  const onSubmit: SubmitHandler<TcustomerValidator> = async (values) => {
+  const handleDialogChange = (open: boolean) => {
+    setIsDialogOpen(open);
+  };
+  const handleUpdate = async (
+    id: string,
+    values: TcustomerValidator,
+    gstData?: GSTDataItem[]
+  ): Promise<void> => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const formattedGstData = gstData?.map((item, index) => ({
+          SerialNo: index + 1,
+          GSTRegNo: item.GSTRegNo,
+          GSTState: item.GSTState,
+          GSTAddress: item.GSTAddress,
+        }));
+
+        const formData: Partial<TcustomerValidator> & {
+          Gsts: typeof formattedGstData;
+        } = {
+          ...values,
+          Gsts: formattedGstData,
+        };
+
+        (Object.keys(formData) as Array<keyof typeof formData>).forEach(
+          (key) => {
+            if (formData[key] === undefined || formData[key] === null) {
+              delete formData[key];
+            }
+          }
+        );
+
+        console.log("Request update data:", formData);
+
+        const response = await apiClient.put(
+          `/commonMaster/customer/update/${id}`,
+          formData
+        );
+
+        console.log("Response:", response);
+
+        if (response.data.success) {
+          await new Promise<void>((resolveToast) => {
+            toast.success("Customer updated successfully!", {
+              onAutoClose: () => resolveToast(),
+            });
+          });
+          closeDialog();
+          resolve();
+          await fetchCustomer();
+        } else {
+          toast.error("Failed to update Customer");
+          reject(new Error("Failed to update Customer"));
+        }
+      } catch (error) {
+        console.error("Error updating Customer:", error);
+        if (error instanceof Error) {
+          toast.error(
+            `An error occurred while updating Customer: ${error.message}`
+          );
+        } else {
+          toast.error("An unexpected error occurred while updating Customer");
+        }
+        reject(error);
+      }
+    });
+  };
+  const handleCreate = async (values: TcustomerValidator) => {
     try {
-      console.log("values", values);
+      console.log("Invoking function");
+
+      const filterData = (
+        data: GSTDataItem[]
+      ): Omit<GSTDataItem, "SerialNo">[] => {
+        return data.map(({ SerialNo, ...rest }) => rest);
+      };
+
+      const filteredData = filterData(gstData);
+
+      const formData = { ...values, created_by: uuidv4() };
+      const requestData = {
+        ...formData,
+        Gsts: filteredData,
+      };
+
+      console.log("Form data", requestData);
+
+      const response = await apiClient.post(
+        "/commonMaster/customer/create",
+        requestData
+      );
+
+      console.log("Response", response);
+
+      if (response.data.success) {
+        toast.success("Customer created successfully!");
+        await fetchCustomer();
+        closeDialog();
+      } else {
+        toast.error("Failed to create Customer");
+      }
     } catch (error) {
+      console.error("Error creating customer:", error);
+      if (error instanceof Error) {
+        toast.error(
+          `An error occurred while creating Customer: ${error.message}`
+        );
+      } else {
+        toast.error("An unexpected error occurred while creating Customer");
+      }
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await apiClient.delete(
+        `/commonMaster/customer/delete/${id}`
+      );
+      if (response.data.success) {
+        await new Promise<void>((resolve) => {
+          toast.success("Customer deleted successfully!", {
+            onAutoClose: () => resolve(),
+          });
+        });
+
+        fetchCustomer();
+        closeDialog();
+      } else {
+        toast.error("Failed to delete Customer");
+      }
+    } catch (error: unknown) {
+      console.log("error", error);
+      toast.error("An error occurred while deleting Customer");
+    }
+  };
+
+  const handleApprove = () => {};
+  const handleReject = () => {};
+
+  const fetchCustomer = async () => {
+    try {
+      setIsloading(true);
+      const response = await apiClient.get(
+        "/commonMaster/customer/allCustomer"
+      );
+      setIsloading(false);
+      console.log("get company detail response", response);
+      setCustomerData(response.data.allCustomer);
+    } catch (error) {
+      setIsloading(false);
       console.log("error", error);
     }
   };
 
   useEffect(() => {
-    setDate(new Date());
+    fetchCustomer();
   }, []);
 
   useEffect(() => {
@@ -97,6 +246,9 @@ function Page() {
     return null;
   }
 
+  if (isLoading) {
+    return <LoadingDots />;
+  }
   return (
     <MaxWidthWrapper className=" max-w-screen-2xl ">
       <h1 className=" text-5xl my-12 tracking-tighter font-bold text-center w-full text-zinc-700">
@@ -108,7 +260,7 @@ function Page() {
             <DialogTrigger>
               <TooltipProvider delayDuration={300}>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <button
                       className="group flex items-center  "
                       onClick={openDialog}
@@ -133,19 +285,31 @@ function Page() {
               </DialogHeader>
               <FormModule<TcustomerValidator>
                 form={form}
-                //@ts-ignore
-                onSubmit={onSubmit}
-                data={data}
-                setData={setData}
-                date={date}
-                setDate={setDate}
+                onSubmit={handleCreate}
+                data={gstData}
+                setData={setGSTData}
                 formFields={Customer}
               />
             </DialogContent>
           </Dialog>
         </div>
 
-        <TableModule tableName={PAGENAME} header={commonmaster} />
+        <TableModule<TcustomerValidator>
+          data={customerData}
+          tableName={PAGENAME}
+          header={CustomerHeaders}
+          form={form}
+          // onSubmit={handleCreate}
+          onUpdate={handleUpdate}
+          includeGSTTable={true}
+          currentItemID={currentItemID}
+          setCurrentItemID={setCurrentItemID}
+          onDelete={handleDelete}
+          // setData={setData}
+          onAprrove={handleApprove}
+          onReject={handleReject}
+          formFields={Customer}
+        />
       </div>
     </MaxWidthWrapper>
   );

@@ -13,7 +13,7 @@ export default function SwitchAccount() {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger className="text-base text-stone-700">
+        <DropdownMenuTrigger asChild className="text-base text-stone-700">
           <Button variant="ghost" size="default" className="relative">
             Switch account
           </Button>

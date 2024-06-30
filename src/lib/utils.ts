@@ -33,3 +33,16 @@ apiClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+export type ApiError = {
+  response?: {
+    data: {
+      message?: string;
+      success: boolean;
+    };
+    status: number;
+    statusText: string;
+  };
+  request?: any;
+  message: string;
+};

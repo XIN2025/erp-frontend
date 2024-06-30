@@ -24,7 +24,7 @@ function Profile() {
           <Button variant="ghost" size="default" className="relative">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <User />
                 </TooltipTrigger>
                 <TooltipContent className="mt-2">

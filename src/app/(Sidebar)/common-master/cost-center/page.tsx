@@ -15,27 +15,27 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { commonmaster } from "@/config";
-import { FilePlus2 } from "lucide-react";
+
+import { FilePlus2, Loader2, Loader2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import FormModule from "@/components/FormModule";
+import { CompanyDetails, CostCenter } from "@/config/common-master-forms";
+import { ApiError, apiClient } from "@/lib/utils";
 import {
-  BusinessUnit,
-  CompanyDetails,
-  CostCenter,
-} from "@/config/common-master-forms";
-import { apiClient } from "@/lib/utils";
-import {
-  TcompanyDetailsValidtor,
   TcostCenterValidator,
-  companyDetailsValidtor,
   costCenterValidator,
 } from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import {
+  CompanyDetailsHeaders,
+  CostCenterHeaders,
+} from "@/config/common-master-headers";
+import LoadingDots from "@/components/Loading";
+import { useRouter } from "next/navigation";
 
 const PAGENAME: string = "Cost Center";
 
@@ -48,9 +48,13 @@ export interface GSTDataItem {
 }
 
 function Page() {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [costCenter, setCostCenter] = useState<undefined | []>();
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState<Date>();
+  const [currentItemID, setCurrentItemID] = useState<string | undefined>("");
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const form = useForm<TcostCenterValidator>({
     resolver: zodResolver(costCenterValidator),
     defaultValues: {
@@ -61,9 +65,7 @@ function Page() {
     },
   });
 
-  const { handleSubmit, control } = form;
-
-  const [data, setData] = useState<GSTDataItem[]>([
+  const [gstData, setGSTData] = useState<GSTDataItem[]>([
     {
       SerialNo: 1,
       GSTRegNo: " ",
@@ -78,7 +80,71 @@ function Page() {
     setIsDialogOpen(open);
   };
 
-  const onSubmit: SubmitHandler<TcostCenterValidator> = async (values) => {
+  const handleUpdate = (
+    id: string,
+    values: TcostCenterValidator,
+    gstData?: GSTDataItem[]
+  ) => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const formattedGstData = gstData?.map((item, index) => ({
+          SerialNo: index + 1,
+          GSTRegNo: item.GSTRegNo,
+          GSTState: item.GSTState,
+          GSTAddress: item.GSTAddress,
+        }));
+
+        const formData: Partial<TcostCenterValidator> & {
+          Gsts: typeof formattedGstData;
+        } = {
+          ...values,
+
+          Gsts: formattedGstData,
+        };
+
+        (Object.keys(formData) as Array<keyof typeof formData>).forEach(
+          (key) => {
+            if (formData[key] === undefined || formData[key] === null) {
+              delete formData[key];
+            }
+          }
+        );
+
+        const backendData = {
+          ...formData,
+        };
+
+        console.log("Request data:", backendData);
+
+        const response = await apiClient.put(
+          `/commonMaster/CostCenter/update/${id}`,
+          backendData
+        );
+
+        console.log("Response:", response);
+
+        if (response.data.success) {
+          await new Promise<void>((resolveToast) => {
+            toast.success("Cost Center updated successfully!", {
+              onAutoClose: () => resolveToast(),
+            });
+          });
+          closeDialog();
+
+          resolve();
+          fetchCostCenter();
+        } else {
+          toast.error("Failed to update Cost Center");
+          reject(new Error("Failed to update Cost Center"));
+        }
+      } catch (error) {
+        console.error("Error updating Cost Center:", error);
+        toast.error("An error occurred while updating Cost Center");
+        reject(error);
+      }
+    });
+  };
+  const handleCreate = async (values: TcostCenterValidator) => {
     try {
       const filterData = (data: GSTDataItem[]) => {
         return data.map((item) => {
@@ -86,33 +152,81 @@ function Page() {
           return rest;
         });
       };
-      const filteredData = filterData(data);
+      const filteredData = filterData(gstData);
       const formData = { ...values, COIDate: date, created_by: uuidv4() };
       const requestData = {
         ...formData,
         Gsts: [...filteredData],
       };
 
-      console.log("formdta", requestData);
+      console.log("formdata", requestData);
       const response = await apiClient.post(
-        "/commonMaster/companyDetails/create",
+        "/commonMaster/costCenter/create",
         requestData
       );
       console.log("response", response);
       if (response.data.success) {
         await new Promise<void>((resolve) => {
-          toast.success("Company Details created successfully!", {
+          toast.success("Cost Center created successfully!", {
             onAutoClose: () => resolve(),
           });
         });
+
+        fetchCostCenter();
         closeDialog();
       } else {
-        toast.error("Failed to create Company Details");
+        toast.error("Failed to create Cost Center");
       }
     } catch (error) {
       console.log("error", error);
+      toast.error("An error occurred while creating Cost Center");
     }
   };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await apiClient.delete(
+        `/commonMaster/costCenter/delete/${id}`
+      );
+      if (response.data.success) {
+        await new Promise<void>((resolve) => {
+          toast.success("Cost Center deleted successfully!", {
+            onAutoClose: () => resolve(),
+          });
+        });
+
+        fetchCostCenter();
+        closeDialog();
+      } else {
+        toast.error("Failed to delete Cost Center");
+      }
+    } catch (error: unknown) {
+      console.log("error", error);
+      toast.error("An error occurred while deleting Cost Center");
+    }
+  };
+
+  const handleApprove = () => {};
+  const handleReject = () => {};
+
+  const fetchCostCenter = async () => {
+    try {
+      setIsloading(true);
+      const response = await apiClient.get(
+        "/commonMaster/costCenter/allCostCenter"
+      );
+      setIsloading(false);
+      console.log("get company detail response", response);
+      setCostCenter(response.data.allCostCenter);
+    } catch (error) {
+      setIsloading(false);
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCostCenter();
+  }, []);
 
   useEffect(() => {
     setDate(new Date());
@@ -126,6 +240,9 @@ function Page() {
     return null;
   }
 
+  if (isLoading) {
+    return <LoadingDots />;
+  }
   return (
     <MaxWidthWrapper className=" max-w-screen-2xl ">
       <h1 className=" text-5xl my-12 tracking-tighter font-bold text-center w-full text-zinc-700">
@@ -137,7 +254,7 @@ function Page() {
             <DialogTrigger>
               <TooltipProvider delayDuration={300}>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <button
                       className="group flex items-center  "
                       onClick={openDialog}
@@ -162,10 +279,9 @@ function Page() {
               </DialogHeader>
               <FormModule<TcostCenterValidator>
                 form={form}
-                //@ts-ignore
-                onSubmit={onSubmit}
-                data={data}
-                setData={setData}
+                onSubmit={handleCreate}
+                data={gstData}
+                setData={setGSTData}
                 date={date}
                 setDate={setDate}
                 formFields={CostCenter}
@@ -174,7 +290,24 @@ function Page() {
           </Dialog>
         </div>
 
-        <TableModule tableName={PAGENAME} header={commonmaster} />
+        <TableModule<TcostCenterValidator>
+          data={costCenter}
+          tableName={PAGENAME}
+          header={CostCenterHeaders}
+          form={form}
+          // onSubmit={handleCreate}
+          onUpdate={handleUpdate}
+          includeGSTTable={true}
+          currentItemID={currentItemID}
+          setCurrentItemID={setCurrentItemID}
+          onDelete={handleDelete}
+          // setData={setData}
+          onAprrove={handleApprove}
+          onReject={handleReject}
+          date={date}
+          setDate={setDate}
+          formFields={CostCenter}
+        />
       </div>
     </MaxWidthWrapper>
   );

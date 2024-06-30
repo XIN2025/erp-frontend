@@ -76,7 +76,6 @@ export const GSTTable = ({ data, setData }: GSTTableProps) => {
           {data.map((row, index) => (
             <Fragment key={index}>
               <TableRow>
-                {/* <TableCell className=" ">{data.length}</TableCell> */}
                 {formTableHeaders.map((header, i) => {
                   const dataObj = data[index];
 
@@ -99,13 +98,14 @@ export const GSTTable = ({ data, setData }: GSTTableProps) => {
                             />
                           ) : (
                             <Select
+                              value={dataObj.GSTState}
                               onValueChange={(selectedState: string) => {
                                 const updatedData = [...data];
-                                updatedData[index]["GSTState"] = selectedState;
+                                updatedData[index].GSTState = selectedState;
                                 setData(updatedData);
                               }}
                             >
-                              <SelectTrigger className=" ">
+                              <SelectTrigger className="">
                                 <SelectValue placeholder="State" />
                               </SelectTrigger>
                               <SelectContent>
@@ -143,68 +143,3 @@ export const GSTTable = ({ data, setData }: GSTTableProps) => {
     </div>
   );
 };
-
-{
-  /* <table className="w-full border-collapse">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="py-2 px-4 border">Serial No.</th>
-            <th className="py-2 px-4 border">GST Reg. No.</th>
-            <th className="py-2 px-4 border">GST State</th>
-            <th className="py-2 px-4 border">GST Address</th>
-            <th className="py-2 px-4 border">Company Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, index) => (
-            <tr key={row.id} className="border-b">
-              <td className="py-2 px-4 border">
-                <button
-                  onClick={() => removeRow(index)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
-                >
-                  ×
-                </button>
-              </td>
-
-              <td className="py-2 px-4 border">
-                <input
-                  type="text"
-                  value={row.GSTRegNo}
-                  onChange={(e) => {
-                    const updatedData = [...data];
-                    updatedData[index].GSTRegNo = e.target.value;
-                    setData(updatedData);
-                  }}
-                  className="w-full border rounded px-2 py-1"
-                />
-              </td>
-              <td className="py-2 px-4 border">
-                <input
-                  type="text"
-                  value={row.GSTState}
-                  onChange={(e) => {
-                    const updatedData = [...data];
-                    updatedData[index].GSTState = e.target.value;
-                    setData(updatedData);
-                  }}
-                  className="w-full border rounded px-2 py-1"
-                />
-              </td>
-              <td className="py-2 px-4 border">
-                <input
-                  type="text"
-                  value={row.GSTAddress}
-                  onChange={(e) => {
-                    const updatedData = [...data];
-                    updatedData[index].GSTAddress = e.target.value;
-                    setData(updatedData);
-                  }}
-                  className="w-full border rounded px-2 py-1"
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */
-}

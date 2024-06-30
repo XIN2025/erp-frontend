@@ -50,7 +50,6 @@ export default function SignIn() {
   }, [router]);
 
   const isSubmitting = form.formState.isSubmitting;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       console.log("values", values);
@@ -70,85 +69,89 @@ export default function SignIn() {
       } else {
         toast.error("Failed to log in");
       }
-      console.log("pusignggg");
+
       setTimeout(() => {
         router.push("/");
         router.refresh();
       }, 50);
-      console.log("pushed");
     } catch (error) {
+      toast.error("Failed to log in");
       console.log("error", error);
     }
   };
 
   return (
-    <div className="bg-blue-500 min-h-screen flex justify-center items-center">
-      <div className="h-[calc(100vh-10rem)] flex w-[85vw] mx-auto rounded-2xl bg-white overflow-hidden relative">
-        <div className="h-full flex flex-col items-center justify-center sm:w-1/2 bg-white gap-3 p-4 relative z-10">
-          <div className="absolute top-8 left-0   right-0 flex flex-col items-center justify-center gap-4">
-            <h1 className="text-3xl mb-4 tracking-tighter text-blue-400 font-bold">
-              hec group
+    <div className="bg-blue-500 min-h-screen flex justify-center items-center p-4">
+      <div className="w-[85vw] h-[85vh] mx-auto flex flex-col md:flex-row rounded-2xl bg-white overflow-hidden shadow-lg">
+        <div className="w-full md:w-1/2 flex flex-col p-8 relative">
+          <div className="text-center mt-7  sm:-mb-[7rem] ">
+            <h1 className="text-3xl mb-2 tracking-tighter text-blue-400 font-bold">
+              HEC GROUP
             </h1>
-            <h1 className="text-5xl tracking-tighter font-bold">
+            <h2 className="text-5xl tracking-tighter font-bold">
               Welcome Back
-            </h1>
+            </h2>
           </div>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-2 w-3/4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-            >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <div className="flex-grow flex items-center justify-center">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4 w-full max-w-sm"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex flex-col items-end">
-                <Button variant="link">Forgot passowrd?</Button>
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Signing in..." : "Sign In"}
-                </Button>
-              </div>
-            </form>
-          </Form>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex flex-col items-end">
+                  <Button variant="link" className="mb-2">
+                    Forgot password?
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="w-full"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Signing in..." : "Sign In"}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
         </div>
-        <div className="sm:w-1/2 h-full bg-gray-100 relative">
+        <div className="hidden md:block w-1/2 bg-gray-100 relative">
           <Image
             src="/signin.png"
-            alt="image"
-            fill
+            alt="Sign In"
+            layout="fill"
             objectFit="cover"
-            className="rounded-2xl"
+            className="rounded-r-2xl"
           />
         </div>
       </div>

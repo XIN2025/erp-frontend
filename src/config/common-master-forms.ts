@@ -2,8 +2,12 @@ import {
   TbusinessUnitValidator,
   TcompanyDetailsValidtor,
   TcostCenterValidator,
+  TcurrencyValidator,
   TcustomerValidator,
   TemployeeMasterValidator,
+  TgoodsReceiptValidators,
+  TmachineClassValidators,
+  TwarehouseValidators,
   employeeMasterValidator,
 } from "@/lib/validators/common-master-form-validators/form-validators";
 
@@ -81,7 +85,7 @@ export const CompanyDetails: Array<{
   },
   { name: "MSME", label: "MSME", type: "text" },
   { name: "MSMEUdyam", label: "MSME Udyam", type: "text" },
-  { name: "Status", label: "Status", type: "text" },
+
   { name: "Tags", label: "Tags", type: "text" },
 ];
 
@@ -166,7 +170,7 @@ export const Customer: Array<{
   { name: "Website", label: "Website", type: "text" },
   { name: "PAN", label: "PAN", type: "text" },
   { name: "ServiceTaxRegNo", label: "Service Tax Reg No", type: "text" },
-  { name: "CINLLPN", label: "CIN/LLPN", type: "text" },
+  { name: "CINLLPIN", label: "CIN/LLPIN", type: "text" },
   { name: "Tags", label: "Tags", type: "text" },
 ];
 
@@ -232,5 +236,53 @@ export const CostCenter: Array<{
 
   { name: "CostCenterName", label: "Cost Center Name", type: "text" },
   { name: "ProjectSiteAddress", label: "Project Site Address", type: "text" },
+  { name: "Tags", label: "Tags", type: "text" },
+];
+
+export const Currency: Array<{
+  name: keyof TcurrencyValidator;
+  label: string;
+  type: "text" | "date" | "number";
+}> = [
+  { name: "CurrencyCode", label: "Currency Code", type: "text" },
+
+  { name: "CurrencyName", label: "Currency Name", type: "text" },
+
+  { name: "Tags", label: "Tags", type: "text" },
+];
+export const Warehouse: Array<{
+  name: keyof TwarehouseValidators;
+  label: string;
+  type: "text" | "date" | "number";
+}> = [
+  { name: "CompanyName", label: "Company Name", type: "text" },
+
+  { name: "CostCenterName", label: "Currency Name", type: "text" },
+  { name: "WarehouseName", label: "Warehouse Name", type: "text" },
+  { name: "ProjectSiteAddress", label: "Project Site Address", type: "text" },
+
+  { name: "Tags", label: "Tags", type: "text" },
+];
+export const GoodsReceipt: Array<{
+  name: keyof TgoodsReceiptValidators;
+  label: string;
+  type: "text" | "date" | "number";
+}> = [
+  { name: "ReceiptCode", label: "Receipt Code", type: "text" },
+
+  { name: "ReceiptDescription", label: "Receipt Description", type: "text" },
+];
+export const MachineClass: Array<{
+  name: keyof TmachineClassValidators;
+  label: string;
+  type: "text" | "date" | "number";
+}> = [
+  { name: "MachineClassCode", label: "Machine Class Code", type: "text" },
+
+  {
+    name: "MachineClassDescription",
+    label: "Machine Class Description",
+    type: "text",
+  },
   { name: "Tags", label: "Tags", type: "text" },
 ];

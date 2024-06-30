@@ -15,21 +15,24 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { commonmaster } from "@/config";
-import { FilePlus2 } from "lucide-react";
+
+import { FilePlus2, Loader2, Loader2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import FormModule from "@/components/FormModule";
 import { CompanyDetails } from "@/config/common-master-forms";
-import { apiClient } from "@/lib/utils";
+import { ApiError, apiClient } from "@/lib/utils";
 import {
   TcompanyDetailsValidtor,
   companyDetailsValidtor,
 } from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { CompanyDetailsHeaders } from "@/config/common-master-headers";
+import LoadingDots from "@/components/Loading";
+import { useRouter } from "next/navigation";
 
 const PAGENAME: string = "Company Details";
 
@@ -42,10 +45,13 @@ export interface GSTDataItem {
 }
 
 function Page() {
+  const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [companyDetail, setCompanyDetail] = useState<undefined | []>();
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState<Date>();
+  const [currentItemID, setCurrentItemID] = useState<string | undefined>("");
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const form = useForm<TcompanyDetailsValidtor>({
     resolver: zodResolver(companyDetailsValidtor),
     defaultValues: {
@@ -66,13 +72,12 @@ function Page() {
       PermanentAccountNumber: "",
       MSME: "",
       MSMEUdyam: "",
-      Status: "",
+
       Tags: "",
     },
   });
 
-  console.log("companydetail", companyDetail);
-  const [data, setData] = useState<GSTDataItem[]>([
+  const [gstData, setGSTData] = useState<GSTDataItem[]>([
     {
       SerialNo: 1,
       GSTRegNo: " ",
@@ -87,7 +92,74 @@ function Page() {
     setIsDialogOpen(open);
   };
 
-  const onSubmit: SubmitHandler<TcompanyDetailsValidtor> = async (values) => {
+  const handleUpdate = (
+    id: string,
+    values: TcompanyDetailsValidtor,
+    gstData?: GSTDataItem[]
+  ) => {
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        const formattedGstData = gstData?.map((item, index) => ({
+          SerialNo: index + 1,
+          GSTRegNo: item.GSTRegNo,
+          GSTState: item.GSTState,
+          GSTAddress: item.GSTAddress,
+        }));
+
+        const formData: Partial<TcompanyDetailsValidtor> & {
+          Gsts: typeof formattedGstData;
+        } = {
+          ...values,
+          COIDate: date || undefined,
+          Gsts: formattedGstData,
+        };
+
+        (Object.keys(formData) as Array<keyof typeof formData>).forEach(
+          (key) => {
+            if (formData[key] === undefined || formData[key] === null) {
+              delete formData[key];
+            }
+          }
+        );
+
+        const backendData = {
+          ...formData,
+          COIDate: formData.COIDate
+            ? formData.COIDate.toISOString().split("T")[0]
+            : undefined,
+        };
+
+        console.log("Request data:", backendData);
+
+        const response = await apiClient.put(
+          `/commonMaster/companyDetails/update/${id}`,
+          backendData
+        );
+
+        console.log("Response:", response);
+
+        if (response.data.success) {
+          await new Promise<void>((resolveToast) => {
+            toast.success("Company Details updated successfully!", {
+              onAutoClose: () => resolveToast(),
+            });
+          });
+          closeDialog();
+
+          resolve();
+          fetchCompanyDetails();
+        } else {
+          toast.error("Failed to update Company Details");
+          reject(new Error("Failed to update Company Details"));
+        }
+      } catch (error) {
+        console.error("Error updating Company Details:", error);
+        toast.error("An error occurred while updating Company Details");
+        reject(error);
+      }
+    });
+  };
+  const handleCreate = async (values: TcompanyDetailsValidtor) => {
     try {
       const filterData = (data: GSTDataItem[]) => {
         return data.map((item) => {
@@ -95,7 +167,7 @@ function Page() {
           return rest;
         });
       };
-      const filteredData = filterData(data);
+      const filteredData = filterData(gstData);
       const formData = { ...values, COIDate: date, created_by: uuidv4() };
       const requestData = {
         ...formData,
@@ -114,28 +186,61 @@ function Page() {
             onAutoClose: () => resolve(),
           });
         });
+
+        fetchCompanyDetails();
         closeDialog();
       } else {
         toast.error("Failed to create Company Details");
       }
     } catch (error) {
       console.log("error", error);
+      toast.error("An error occurred while creating Company Details");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await apiClient.delete(
+        `/commonMaster/companyDetails/delete/${id}`
+      );
+      if (response.data.success) {
+        await new Promise<void>((resolve) => {
+          toast.success("Company Details deleted successfully!", {
+            onAutoClose: () => resolve(),
+          });
+        });
+
+        fetchCompanyDetails();
+        closeDialog();
+      } else {
+        toast.error("Failed to delete Company Details");
+      }
+    } catch (error: unknown) {
+      console.log("error", error);
+      toast.error("An error occurred while deleting Company Details");
+    }
+  };
+
+  const handleApprove = () => {};
+  const handleReject = () => {};
+
+  const fetchCompanyDetails = async () => {
+    try {
+      setIsloading(true);
+      const response = await apiClient.get(
+        "/commonMaster/companyDetails/allCompanyDetails"
+      );
+      setIsloading(false);
+      console.log("get company detail response", response);
+      setCompanyDetail(response.data.allCompanyDetails);
+    } catch (error) {
+      setIsloading(false);
+      console.log("error", error);
     }
   };
 
   useEffect(() => {
-    try {
-      const getCompanyDetails = async () => {
-        const response = await apiClient.get(
-          "/commonMaster/companyDetails/allCompanyDetails"
-        );
-        console.log("respiosne", response);
-        setCompanyDetail(response.data.allCompanyDetails);
-      };
-      getCompanyDetails();
-    } catch (error) {
-      console.log("error", error);
-    }
+    fetchCompanyDetails();
   }, []);
 
   useEffect(() => {
@@ -150,6 +255,9 @@ function Page() {
     return null;
   }
 
+  if (isLoading) {
+    return <LoadingDots />;
+  }
   return (
     <MaxWidthWrapper className=" max-w-screen-2xl ">
       <h1 className=" text-5xl my-12 tracking-tighter font-bold text-center w-full text-zinc-700">
@@ -161,7 +269,7 @@ function Page() {
             <DialogTrigger>
               <TooltipProvider delayDuration={300}>
                 <Tooltip>
-                  <TooltipTrigger>
+                  <TooltipTrigger asChild>
                     <button
                       className="group flex items-center  "
                       onClick={openDialog}
@@ -186,10 +294,9 @@ function Page() {
               </DialogHeader>
               <FormModule<TcompanyDetailsValidtor>
                 form={form}
-                //@ts-ignore
-                onSubmit={onSubmit}
-                data={data}
-                setData={setData}
+                onSubmit={handleCreate}
+                data={gstData}
+                setData={setGSTData}
                 date={date}
                 setDate={setDate}
                 formFields={CompanyDetails}
@@ -198,10 +305,23 @@ function Page() {
           </Dialog>
         </div>
 
-        <TableModule
+        <TableModule<TcompanyDetailsValidtor>
           data={companyDetail}
           tableName={PAGENAME}
-          header={commonmaster}
+          header={CompanyDetailsHeaders}
+          form={form}
+          // onSubmit={handleCreate}
+          onUpdate={handleUpdate}
+          includeGSTTable={true}
+          currentItemID={currentItemID}
+          setCurrentItemID={setCurrentItemID}
+          onDelete={handleDelete}
+          // setData={setData}
+          onAprrove={handleApprove}
+          onReject={handleReject}
+          date={date}
+          setDate={setDate}
+          formFields={CompanyDetails}
         />
       </div>
     </MaxWidthWrapper>

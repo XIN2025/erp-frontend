@@ -12,6 +12,7 @@ import {
   Clock,
   Cog,
   HandCoins,
+  HardHat,
   Landmark,
   Repeat,
   SlidersHorizontal,
@@ -53,7 +54,7 @@ const navigationLinks = [
   {
     href: "/#",
     label: "Material Management",
-    Icon: UsersRound,
+    Icon: HardHat,
     hasDropdown: true,
   },
   {
@@ -105,7 +106,7 @@ const MenuOptions = (props: Props) => {
   }
 
   return (
-    <nav className=" dark:bg-black h-screen    justify-between flex items-center flex-col  gap-10 py-6 px-2">
+    <nav className=" dark:bg-black h-screen    justify-between flex items-center flex-col z-30  gap-10 py-6 px-2">
       <div className="flex items-center justify-center flex-col gap-8">
         <Link className="flex font-bold flex-row " href="/">
           hec .
@@ -114,7 +115,7 @@ const MenuOptions = (props: Props) => {
           {navigationLinks.map((menuItem) => (
             <ul key={menuItem.label}>
               <Tooltip delayDuration={0}>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <li>
                     <SidebarButton // Assuming SidebarButton component
                       key={menuItem.href}

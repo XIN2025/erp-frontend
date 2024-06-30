@@ -10,11 +10,8 @@ export function middleware(request: NextRequest) {
   // Use next-cookies to get all cookies
   const cookieStore = cookies();
   const allCookies = cookieStore.getAll();
-  console.log("All cookies:", allCookies);
 
-  // Get the token cookie
   const tokenCookie = cookieStore.get("token");
-  console.log("Token cookie:", tokenCookie);
 
   if (!tokenCookie && !PUBLIC_ROUTES.includes(request.nextUrl.pathname)) {
     console.log("No token cookie found, redirecting to signin");

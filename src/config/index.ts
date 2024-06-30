@@ -241,20 +241,6 @@ export const DropDownMenu = [
   },
 ];
 
-export const commonmaster = [
-  {
-    label: "Request By",
-    id: "requestBy",
-  },
-  {
-    label: "Date",
-    id: "date",
-  },
-  {
-    label: "Operation",
-    id: "operation",
-  },
-];
 export const materialManagement = [
   {
     label: "Request By",
