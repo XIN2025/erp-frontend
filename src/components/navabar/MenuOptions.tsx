@@ -107,10 +107,10 @@ const MenuOptions = (props: Props) => {
 
   return (
     <nav className=" dark:bg-black h-screen    justify-between flex items-center flex-col z-30  gap-10 py-6 px-2">
-      <div className="flex items-center justify-center flex-col gap-8">
-        <Link className="flex font-bold flex-row " href="/">
+      <div className="flex items-center justify-center mt-6 flex-col gap-8">
+        {/* <Link className="flex font-bold flex-row " href="/">
           hec .
-        </Link>
+        </Link> */}
         <TooltipProvider>
           {navigationLinks.map((menuItem) => (
             <ul key={menuItem.label}>

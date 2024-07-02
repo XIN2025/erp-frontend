@@ -18,10 +18,13 @@ function Logout() {
     try {
       deleteCookie("token", {
         path: "/",
-        domain: window.location.hostname,
+        domain:
+          process.env.NODE_ENV === "production"
+            ? process.env.NEXT_PUBLIC_SITE_URL
+            : undefined,
       });
 
-      window.location.reload();
+      router.push("/auth/signin");
     } catch (error) {
       console.error("Error during logout:", error);
     }
