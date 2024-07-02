@@ -117,7 +117,7 @@ export type TcurrencyValidator = z.infer<typeof currencyValidator>;
 export const warehouseValidators = z.object({
   CompanyName: z.string().min(1, "Company Name is required!"),
   CostCenterName: z.string().min(1, "Cost Center Name is requried! "),
-  WarehouseName: z.string().min(1, "Warehouse Name is requried! "),
+  WareHouseName: z.string().min(1, "Warehouse Name is requried! "),
   ProjectSiteAddress: z.string().min(1, "Project Site Address is requried! "),
 
   Tags: z.string().min(1, "At least one Tag is required!"),
@@ -133,10 +133,39 @@ export const goodsReceiptValidators = z.object({
 export type TgoodsReceiptValidators = z.infer<typeof goodsReceiptValidators>;
 export const machineClassValidators = z.object({
   MachineClassCode: z.string().min(1, "Machine Class Code is required!"),
-  MachineClassDescription: z
+  MaterialClassDescription: z
     .string()
     .min(1, "Machine Class Description is requried! "),
   Tags: z.string().min(1, "At least one Tag is required!"),
 });
 
 export type TmachineClassValidators = z.infer<typeof machineClassValidators>;
+export const invoiceTypeValidators = z.object({
+  InvoiceTypeCode: z.string().min(1, "Invoice Type Code is required!"),
+  InvoiceType: z.string().min(1, "Invoice Type is required!"),
+  AccountCode: z.string().min(1, " Account Code is required!"),
+
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TinvoiceTypeValidators = z.infer<typeof invoiceTypeValidators>;
+export const recoveryTypeValidators = z.object({
+  RecoveryTypeCode: z.string().min(1, "Recovery Type Code is required!"),
+  RecoveryType: z.string().min(1, "Recovery Type is required!"),
+  AccountCode: z.string().min(1, " Account Code is required!"),
+
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TrecoveryTypeValidators = z.infer<typeof recoveryTypeValidators>;
+export const unitsOFMeasurementValidators = z.object({
+  UOMCode: z.string().min(1, "UOM Code is required!"),
+  UOMDescription: z.string().min(1, "UOM description is required!"),
+  AllowableDecimal: z.coerce.number().min(1, "Allowable decimal is required!"),
+
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TunitsOFMeasurementValidators = z.infer<
+  typeof unitsOFMeasurementValidators
+>;

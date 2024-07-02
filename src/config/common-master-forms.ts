@@ -6,7 +6,10 @@ import {
   TcustomerValidator,
   TemployeeMasterValidator,
   TgoodsReceiptValidators,
+  TinvoiceTypeValidators,
   TmachineClassValidators,
+  TrecoveryTypeValidators,
+  TunitsOFMeasurementValidators,
   TwarehouseValidators,
   employeeMasterValidator,
 } from "@/lib/validators/common-master-form-validators/form-validators";
@@ -258,7 +261,7 @@ export const Warehouse: Array<{
   { name: "CompanyName", label: "Company Name", type: "text" },
 
   { name: "CostCenterName", label: "Currency Name", type: "text" },
-  { name: "WarehouseName", label: "Warehouse Name", type: "text" },
+  { name: "WareHouseName", label: "Warehouse Name", type: "text" },
   { name: "ProjectSiteAddress", label: "Project Site Address", type: "text" },
 
   { name: "Tags", label: "Tags", type: "text" },
@@ -280,9 +283,42 @@ export const MachineClass: Array<{
   { name: "MachineClassCode", label: "Machine Class Code", type: "text" },
 
   {
-    name: "MachineClassDescription",
+    name: "MaterialClassDescription",
     label: "Machine Class Description",
     type: "text",
   },
+  { name: "Tags", label: "Tags", type: "text" },
+];
+export const InvoiceType: Array<{
+  name: keyof TinvoiceTypeValidators;
+  label: string;
+  type: "text" | "date" | "number";
+}> = [
+  { name: "AccountCode", label: "Account Code", type: "text" },
+  { name: "InvoiceType", label: "Invoice Type ", type: "text" },
+  { name: "InvoiceTypeCode", label: "Invoice Type Code", type: "text" },
+
+  { name: "Tags", label: "Tags", type: "text" },
+];
+export const RecoveryType: Array<{
+  name: keyof TrecoveryTypeValidators;
+  label: string;
+  type: "text" | "date" | "number";
+}> = [
+  { name: "AccountCode", label: "Account Code", type: "text" },
+  { name: "RecoveryType", label: "Recovery Type ", type: "text" },
+  { name: "RecoveryTypeCode", label: "Recovery Type Code", type: "text" },
+
+  { name: "Tags", label: "Tags", type: "text" },
+];
+export const UnitsOfMeasurement: Array<{
+  name: keyof TunitsOFMeasurementValidators;
+  label: string;
+  type: "text" | "date" | "number";
+}> = [
+  { name: "UOMCode", label: "UOM Code", type: "text" },
+  { name: "UOMDescription", label: "UOM Description", type: "text" },
+  { name: "AllowableDecimal", label: "Allowable Decimal ", type: "text" },
+
   { name: "Tags", label: "Tags", type: "text" },
 ];

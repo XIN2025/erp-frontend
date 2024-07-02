@@ -16,32 +16,25 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { FilePlus2, Loader2, Loader2Icon } from "lucide-react";
+import { FilePlus2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 import FormModule from "@/components/FormModule";
+import LoadingDots from "@/components/Loading";
+import { MachineClass, RecoveryType } from "@/config/common-master-forms";
 import {
-  BusinessUnit,
-  CompanyDetails,
-  GoodsReceipt,
-  MachineClass,
-} from "@/config/common-master-forms";
-import { ApiError, apiClient } from "@/lib/utils";
+  MachineClassHeaders,
+  RecoveryTypeHeaders,
+} from "@/config/common-master-headers";
+import { apiClient } from "@/lib/utils";
 import {
   TmachineClassValidators,
   machineClassValidators,
 } from "@/lib/validators/common-master-form-validators/form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import {
-  BusinessUnitHeaders,
-  CompanyDetailsHeaders,
-  GoodsReceiptHeader,
-} from "@/config/common-master-headers";
-import LoadingDots from "@/components/Loading";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const PAGENAME: string = "Machine Class";
 
@@ -65,7 +58,8 @@ function Page() {
     resolver: zodResolver(machineClassValidators),
     defaultValues: {
       MachineClassCode: "",
-      MachineClassDescription: "",
+      MaterialClassDescription: "",
+
       Tags: "",
     },
   });
@@ -166,7 +160,7 @@ function Page() {
       );
       setIsloading(false);
       console.log("get Machine Class response", response);
-      setMachineClassData(response.data.allMachineClass);
+      setMachineClassData(response.data.allMachineClasses);
     } catch (error) {
       setIsloading(false);
       console.log("error", error);
@@ -240,7 +234,7 @@ function Page() {
         <TableModule<TmachineClassValidators>
           data={machineClassData}
           tableName={PAGENAME}
-          header={GoodsReceiptHeader}
+          header={MachineClassHeaders}
           includeGSTTable={false}
           form={form}
           // onSubmit={handleCreate}

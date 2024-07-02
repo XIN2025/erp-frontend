@@ -83,26 +83,26 @@ function Page() {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const response = await apiClient.put(
-          `/commonMaster/goodsReceipt/update/${id}`,
+          `/commonMaster/goodsReceiptType/update/${id}`,
           values
         );
         console.log("Response:", response);
         if (response.data.success) {
           await new Promise<void>((resolveToast) => {
-            toast.success("Business Unit updated successfully!", {
+            toast.success("Goods Receipt updated successfully!", {
               onAutoClose: () => resolveToast(),
             });
           });
           closeDialog();
           resolve();
         } else {
-          toast.error("Failed to update Business Unit");
-          reject(new Error("Failed to update Business Unit"));
+          toast.error("Failed to update Goods Receipt");
+          reject(new Error("Failed to update Goods Receipt"));
         }
         fetchBusiness();
       } catch (error) {
-        console.error("Error updating Business Unit:", error);
-        toast.error("An error occurred while updating Business Unit");
+        console.error("Error updating Goods Receipt:", error);
+        toast.error("An error occurred while updating Goods Receipt");
         reject(error);
       }
     });
@@ -110,34 +110,34 @@ function Page() {
   const handleCreate = async (values: TgoodsReceiptValidators) => {
     try {
       const response = await apiClient.post(
-        "/commonMaster/goodsReceipt/create",
+        "/commonMaster/goodsReceiptType/create",
         values
       );
       if (response.data.success) {
         await new Promise<void>((resolve) => {
-          toast.success("Business Unit created successfully!", {
+          toast.success("Goods Receipt created successfully!", {
             onAutoClose: () => resolve(),
           });
         });
         closeDialog();
         fetchBusiness();
       } else {
-        toast.error("Failed to create Business Unit");
+        toast.error("Failed to create Goods Receipt");
       }
     } catch (error) {
       console.log("error", error);
-      toast.error("An error occurred while creating Business Unit");
+      toast.error("An error occurred while creating Goods Receipt");
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       const response = await apiClient.delete(
-        `/commonMaster/goodsReceipt/delete/${id}`
+        `/commonMaster/goodsReceiptType/delete/${id}`
       );
       if (response.data.success) {
         await new Promise<void>((resolve) => {
-          toast.success("Business Unit deleted successfully!", {
+          toast.success("Goods Receipt deleted successfully!", {
             onAutoClose: () => resolve(),
           });
         });
@@ -145,11 +145,11 @@ function Page() {
         closeDialog();
         fetchBusiness();
       } else {
-        toast.error("Failed to delete Business Unit");
+        toast.error("Failed to delete Goods Receipt");
       }
     } catch (error: unknown) {
       console.log("error", error);
-      toast.error("An error occurred while deleting Business Unit");
+      toast.error("An error occurred while deleting Goods Receipt");
     }
   };
 
@@ -160,11 +160,11 @@ function Page() {
     try {
       setIsloading(true);
       const response = await apiClient.get(
-        "/commonMaster/goodsReceipt/allGoodsReceipt"
+        "/commonMaster/goodsReceiptType/allGoodsReceiptType"
       );
       setIsloading(false);
-      console.log("get business unit response", response);
-      setGoodsReceiptData(response.data.allGoodsReceipt);
+      console.log("get Goods Receipt response", response);
+      setGoodsReceiptData(response.data.allGoodsReceiptTypes);
     } catch (error) {
       setIsloading(false);
       console.log("error", error);

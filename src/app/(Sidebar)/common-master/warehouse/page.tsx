@@ -60,7 +60,7 @@ function Page() {
     defaultValues: {
       CompanyName: "",
       CostCenterName: "",
-      WarehouseName: "",
+      WareHouseName: "",
       ProjectSiteAddress: "",
 
       Tags: "",
@@ -226,7 +226,7 @@ function Page() {
       );
       setIsloading(false);
       console.log("get warehouse response", response);
-      setWarehouseData(response.data.allWarehouse);
+      setWarehouseData(response.data.allWareHouse);
     } catch (error) {
       setIsloading(false);
       console.log("error", error);

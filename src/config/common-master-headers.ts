@@ -110,7 +110,7 @@ export const CurrencyHeaders = [
 export const WarehouseHeaders = [
   {
     label: "Warehouse",
-    id: "Warehouse",
+    id: "WareHouseName",
   },
 
   {
@@ -130,6 +130,82 @@ export const GoodsReceiptHeader = [
   {
     label: "Receipt Code",
     id: "ReceiptCode",
+  },
+
+  {
+    label: "Request By",
+    id: "requestBy",
+  },
+  {
+    label: "Date",
+    id: "date",
+  },
+  {
+    label: "Operation",
+    id: "operation",
+  },
+];
+export const InvoiceTypeHeaders = [
+  {
+    label: "Invoice Type",
+    id: "InvoiceType",
+  },
+
+  {
+    label: "Request By",
+    id: "requestBy",
+  },
+  {
+    label: "Date",
+    id: "date",
+  },
+  {
+    label: "Operation",
+    id: "operation",
+  },
+];
+export const RecoveryTypeHeaders = [
+  {
+    label: "Recovery Type",
+    id: "RecoveryType",
+  },
+
+  {
+    label: "Request By",
+    id: "requestBy",
+  },
+  {
+    label: "Date",
+    id: "date",
+  },
+  {
+    label: "Operation",
+    id: "operation",
+  },
+];
+export const UnitsOfMeasurementHeaders = [
+  {
+    label: "Unit of Measurement",
+    id: "UOMDescription",
+  },
+
+  {
+    label: "Request By",
+    id: "requestBy",
+  },
+  {
+    label: "Date",
+    id: "date",
+  },
+  {
+    label: "Operation",
+    id: "operation",
+  },
+];
+export const MachineClassHeaders = [
+  {
+    label: "Machine Class",
+    id: "MaterialClassDescription",
   },
 
   {

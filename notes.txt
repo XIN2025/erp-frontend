@@ -1,4 +1,5 @@
-- finish cosst center edit and create ande delete
+todo---
+    customer gst update
 
 Goods Receipt Type
 Machine Class
@@ -15,3 +16,18 @@ Account
 Invoice Type
 Unit Of Measurement
 Recovery Type
+
+
+
+Completed----
+    Common master--
+        company detatils
+        busniness Unit
+        currency
+        cost center
+        warehouse
+        goods Receipt type
+        Invoice Type
+        Recovery Type
+        machine class
+        uom
