@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex h-screen overflow-hidden`}>
         {token ? (
           <>
-            <aside className="shrink-0">
+            <aside className="shrink-0 h-full">
               <MenuOptions />
             </aside>
             <main className="flex flex-col flex-grow overflow-hidden">

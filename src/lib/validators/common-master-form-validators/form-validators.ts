@@ -4,7 +4,7 @@ export const companyDetailsValidtor = z.object({
   CompanyName: z.string().min(1, "Company Name is required!"),
   RegisteredOfficeAddress: z.string().optional(),
   CertificateOfIncorporationNo: z.string().optional(),
-  COIDate: z.date().optional(), // Add the date field
+  COIDate: z.date().optional(),
   ServiceTaxRegistrationNo: z.string().optional(),
   VATRegistrationNo: z.string().optional(),
   PFRegistrationNo: z.string().optional(),
@@ -52,49 +52,6 @@ export const customerValidator = z.object({
 });
 
 export type TcustomerValidator = z.infer<typeof customerValidator>;
-
-export const employeeMasterValidator = z.object({
-  EmployeeCode: z.string().trim().min(1, "Employee Code is required!"),
-  EmployeeType: z.string().trim().min(1, "Employee Type is required!"),
-  Email: z.string().email("Invalid email format!").optional(),
-  FatherHusbandName: z.string().trim().optional(),
-  DateOfBirth: z.string().optional(),
-  EmployeeFirstName: z.string().trim().optional(),
-  EmployeeLastName: z.string().trim().optional(),
-  Gender: z.string().optional(),
-  Religion: z.string().optional(),
-  MotherTongue: z.string().optional(),
-  PresentAddress: z.string().optional(),
-  PermanentAddress: z.string().optional(),
-  Phone: z.string().optional(),
-  EmergencyContactNumber: z.string().optional(),
-  MaritalStatus: z.string().optional(),
-  IdentificationMark: z.string().optional(),
-  HeightInCM: z.number().optional(),
-  WeightInKG: z.number().optional(),
-  Vision: z.string().optional(),
-  EducationalQualification: z.string().optional(),
-  PastExperience: z.string().optional(),
-  DateOfJoining: z.string().optional(),
-  DateOfExit: z.string().optional(),
-  Designation: z.string().optional(),
-  RoleDescription: z.string().optional(),
-  PfAccountNumber: z.string().optional(),
-  UniversalAccountNumber: z.string().optional(),
-  Esic: z.string().optional(),
-  BankAccountNumber: z.string().optional(),
-  BankName: z.string().optional(),
-  Ifsc: z.string().optional(),
-  Aadhar: z.string().optional(),
-  Pan: z.string().optional(),
-  WagesInRupees: z.number().optional(),
-  OTType: z.string().optional(),
-  Benefits: z.string(),
-  CompanyName: z.string().min(1, "Company Name is required!"),
-  Tags: z.string().min(1, "At least one Tag is required!"),
-});
-
-export type TemployeeMasterValidator = z.infer<typeof employeeMasterValidator>;
 
 export const costCenterValidator = z.object({
   CompanyName: z.string().min(1, "Company Name is required!"),
@@ -168,4 +125,323 @@ export const unitsOFMeasurementValidators = z.object({
 
 export type TunitsOFMeasurementValidators = z.infer<
   typeof unitsOFMeasurementValidators
+>;
+export const activityValidators = z.object({
+  ActivityCode: z.string().min(1, "Activity Code is required!"),
+  ActivityDescription: z.string().min(1, "Activity description is required!"),
+
+  CostType: z.string().min(1, "Cost Type is required!"),
+  UOM: z.string().min(1, "UOM Code is required!"),
+
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TactivityValidators = z.infer<typeof activityValidators>;
+export const machineValidators = z.object({
+  MachineCode: z.string().min(1, "Machine Code is required!"),
+  MachineDescription: z.string().min(1, "Machine Description is required!"),
+  MachineGroupCode: z.string().min(1, "Machine Group Code is required!"),
+  MachineGroupDescription: z
+    .string()
+    .min(1, "Machine Group Description is required!"),
+  MachineClassCode: z.string().min(1, "Machine Class Code is required!"),
+  MachineClassDescription: z
+    .string()
+    .min(1, "Machine Class Description is required!"),
+  MachineOwnership: z.string().min(1, "Machine Ownership is required!"),
+});
+
+export type TmachineValidators = z.infer<typeof machineValidators>;
+
+export const bankValidators = z.object({
+  BankCode: z.string().min(1, "Bank Code is required!"),
+  BankName: z.string().min(1, "Bank Name is required!"),
+  BankAddress: z.string().min(1, "Bank Address is required!"),
+  City: z.string().min(1, "City is required!"),
+  State: z.string().min(1, "State is required!"),
+
+  PIN: z.string().optional(),
+  AccountNo: z.string().min(1, "Account Number is required!"),
+  IFSC: z.string().min(1, "IFSC Code is required!"),
+  MICR: z.string().min(1, "MICR Code is required!"),
+  AccountType: z.string().min(1, "Account Type is required!"),
+  AuthorisedSignatory1: z
+    .string()
+    .min(1, "Authorised Signatory 1 is required!"),
+  ChequeStartingNo: z.string().optional(),
+  AuthorisedSignatory2: z.string().optional(),
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TbankValidators = z.infer<typeof bankValidators>;
+
+export const accountValidators = z.object({
+  AccountCode: z.string().min(1, "Account Code is required!"),
+  AccountDescription: z.string().min(1, "Account Description is required!"),
+  AccountType: z.string().min(1, "Account Type is required!"),
+
+  SubAccountType: z.string().optional(),
+  Ledger: z.string().optional(),
+
+  ActivityCode: z.string().min(1, "Activity Code is required!"),
+  ActivityDescription: z.string().min(1, "Activity Description is required!"),
+  CostHead: z.string().min(1, "Cost Head is required!"),
+  Tags: z.string().min(1, "At least one Tag is required!"),
+});
+
+export type TaccountValidators = z.infer<typeof accountValidators>;
+
+export const materialGroupValidators = z.object({
+  MaterialGroupCode: z.string().min(1, "Material Group Code is required!"),
+  MaterialMajorGroupDescription: z.string().optional(),
+  MaterialMinorGroupDescription: z.string().optional(),
+  MaterialSubGroupDescription: z.string().optional(),
+  MaterialSubSubGroupDescription: z.string().optional(),
+  CategoryTag: z.string().optional(),
+  Tags: z.string().optional(),
+});
+
+export type TmaterialGroupValidators = z.infer<typeof materialGroupValidators>;
+
+export const shiftMasterValidators = z.object({
+  ShiftCode: z.string().min(1, "Shift Code is required!"),
+  ShiftInTime: z.string().min(1, "Shift In Time is required!"),
+  ShiftOutTime: z.string().min(1, "Shift Out Time is required!"),
+
+  Tags: z.string().optional(),
+});
+
+export type TshiftMasterValidators = z.infer<typeof shiftMasterValidators>;
+
+export const materialValidators = z.object({
+  MaterialGroupCode: z.string().min(1, "Material Group Code is required!"),
+  MaterialCode: z.string().min(1, "Material Code is required!"),
+  MaterialDescription: z.string().optional(),
+  MaterialAdditionalDescription: z.string().optional(),
+  UOM: z.string().optional(),
+  Tags: z.string().optional(),
+});
+
+export type TmaterialValidators = z.infer<typeof materialValidators>;
+
+export const machineGroupValidators = z.object({
+  MachineGroupCode: z.string().min(1, "Machine Group Code is required!"),
+  MachineGroupDescription: z
+    .string()
+    .min(1, "Machine Group Description is required!"),
+  MachineGroupLongDescription: z
+    .string()
+    .min(1, "Machine Group Long Description is required!"),
+  MachineClassCode: z.string().min(1, "Machine Class Code is required!"),
+  MachineClassDescription: z
+    .string()
+    .min(1, "Machine Class Description is required!"),
+  Tags: z.string().min(1, "Tag is required!"),
+});
+
+export type TmachineGroupValidators = z.infer<typeof machineGroupValidators>;
+
+export const benefitsMasterValidators = z.object({
+  BenefitCode: z.string().min(1, "Benefit Code is required!"),
+  BenefitDescription: z.string().min(1, "Benefit Description is required!"),
+  PercentageOfBasicWage: z
+    .string()
+    .min(1, "Percentage of Basic Wage is required!"),
+  ApplicableFor: z.string().min(1, "Applicable For is required!"),
+  Account: z.string().min(1, "Account field is required!"),
+  AccountDescription: z.string().min(1, "Account Description is required!"),
+  Tags: z.string().optional(),
+});
+
+export type TbenefitsMastervalidators = z.infer<
+  typeof benefitsMasterValidators
+>;
+
+export const majorScItemGroupValidators = z.object({
+  MajorSCItemGroupCode: z
+    .string()
+    .min(1, "Major SC Item Group Code is required!"),
+  MajorSCItemGroupStatus: z.string().min(1, "Status is required!"),
+  Uom: z.string().min(1, "Unit of Measure is required!"),
+  GroupCategory: z.string().min(1, "Group Category is required!"),
+
+  Tags: z.string().optional(),
+});
+
+export type TmajorScItemGroupValidators = z.infer<
+  typeof majorScItemGroupValidators
+>;
+
+export const ScItemCodeValidators = z.object({
+  MajorSCItemGroupCode: z
+    .string()
+    .min(1, "Major SC Item Group Code is required!"),
+  MajorSCItemGroupDescription: z.string().optional(),
+  SCItemDescription: z.string().optional(),
+  UOM: z.string().min(1, "Unit of Measure is required!"),
+  Component: z.string().optional(),
+  ComponentPercentage: z.string().optional(),
+
+  Tags: z.string().optional(),
+});
+
+export type TScItemCodeValidators = z.infer<typeof ScItemCodeValidators>;
+
+export const workmenDetailsValidators = z
+  .object({
+    WorkmenCode: z.string().min(1, "Workmen Code is required"),
+    WorkmenType: z.string().min(1, "Workmen Type is required"),
+    WorkmenName: z.string().min(1, "Workmen Name is required"),
+    FatherHusbandName: z.string().min(1, "Father/Husband Name is required"),
+    DateOfBirth: z.coerce.date().optional(),
+    Gender: z.string().min(1, "Gender is required"),
+    Religion: z.string().min(1, "Religion is required"),
+    MotherTongue: z.string().min(1, "Mother Tongue is required"),
+    PresentAddress: z.string().min(1, "Present Address is required"),
+    PermanentAddress: z.string().min(1, "Permanent Address is required"),
+    Phone: z.string().min(1, "Phone Number is required"),
+    EmergencyContactNumber: z
+      .string()
+      .min(1, "Emergency Contact Number is required"),
+    MaritalStatus: z.string().min(1, "Marital Status is required"),
+    IdentificationMark: z.string().min(1, "Identification Mark is required"),
+    HeightCm: z.coerce.number().min(1, "Height must be a positive number"),
+    WeightKg: z.coerce.number().min(1, "Weight must be a positive number"),
+    Vision: z.string().min(1, "Vision is required"),
+    LeftEye: z.string().optional(),
+    RightEye: z.string().optional(),
+    EducationalQualification: z
+      .string()
+      .min(1, "Educational Qualification is required"),
+    PastExperienceInYears: z.coerce
+      .number()
+      .min(1, "Past Experience in Years must be non-negative"),
+    PastExperienceInMonths: z.coerce
+      .number()
+      .min(1, "Past Experience in Months must be non-negative"),
+
+    DateOfJoining: z.coerce.date(),
+    DateOfExit: z.coerce.date(),
+    Designation: z.string().min(1, "Designation is required"),
+    SkillCategory: z.string().min(1, "Skill Category is required"),
+    PfAccountNo: z.string().min(1, "PF Account Number is required"),
+    UniversalAccountNo: z
+      .string()
+      .min(1, "Universal Account Number is required"),
+    Esic: z.string().min(1, "ESIC is required"),
+    BankAccountNo: z.string().min(1, "Bank Account Number is required"),
+    BankName: z.string().min(1, "Bank Name is required"),
+    Ifsc: z.string().min(1, "IFSC code is required"),
+    Aadhar: z.string().min(1, "Aadhar Number is required"),
+    Pan: z.string().min(1, "PAN Card Number is required"),
+    Wages: z.coerce.number().min(1, "Wages must be a positive number"),
+    WagesType: z.string().min(1, "Wages Type is required"),
+    OTType: z.string().min(1, "OT Type is required"),
+    Benefits: z.string().min(1, "Benefits is required"),
+  })
+  .refine(
+    (data) => {
+      if (data.Vision === "Specs") {
+        return !!data.LeftEye && !!data.RightEye;
+      }
+      return true;
+    },
+    {
+      message: "Left Eye and Right Eye are required when Vision is Specs",
+      path: ["LeftEye", "RightEye"],
+    }
+  );
+export type TWorkmenDetailsValidators = z.infer<
+  typeof workmenDetailsValidators
+>;
+
+export const vendorValidators = z.object({
+  VendorCode: z.string().min(1, "Vendor Code is required!"),
+  VendorName: z.string().min(1, "Vendor Name is required!"),
+  CorporateOffice: z.string(),
+  RegisteredOffice: z.string(),
+  Phone: z.string(),
+  Email: z.string().email("Invalid email format!"),
+  GSTStatus: z.string(),
+  Website: z.string().min(1, "Invalid website URL format!"),
+  PAN: z.string().min(1, "PAN must be 10 characters long!"),
+  ServiceTaxRegNo: z.string(),
+  CINLLPIN: z.string(),
+
+  VendorTag: z.string(),
+  BankName: z.string(),
+  IFSCCode: z.string().min(1, "IFSC Code must be 11 characters long!"),
+  AccountNo: z.string(),
+  Tags: z.string(),
+});
+
+export type TvendorValidators = z.infer<typeof vendorValidators>;
+
+export const employeeMasterValidators = z
+  .object({
+    EmployeeCode: z.string().min(1, "Employee Code is required"),
+    FatherHusbandName: z.string().min(1, "Father/Husband Name is required"),
+    EmployeeType: z.string().min(1, "Employee Type is required"),
+    DateOfBirth: z.date().optional(),
+    EmployeeFirstName: z.string().min(1, "Employee First Name is required"),
+    EmployeeLastName: z.string().min(1, "Employee Last Name is required"),
+    Email: z
+      .string()
+      .email("Please enter a valid email address")
+      .min(1, "Email is required!"),
+    Gender: z.string().min(1, "Gender is required"),
+    Religion: z.string().min(1, "Religion is required"),
+    MotherTongue: z.string().min(1, "Mother Tongue is required"),
+    PresentAddress: z.string().min(1, "Present Address is required"),
+    PermanentAddress: z.string().min(1, "Permanent Address is required"),
+    Phone: z.string().min(1, "Phone Number is required"),
+    EmergencyContactNumber: z
+      .string()
+      .min(1, "Emergency Contact Number is required"),
+    MaritalStatus: z.string().min(1, "Marital Status is required"),
+    IdentificationMark: z.string().min(1, "Identification Mark is required"),
+    HeightCm: z.coerce.number().min(1, "Height must be a positive number"),
+    WeightKg: z.coerce.number().min(1, "Weight must be a positive number"),
+    Vision: z.string().min(1, "Vision is required"),
+    LeftEye: z.string().optional(),
+    RightEye: z.string().optional(),
+    EducationalQualification: z
+      .string()
+      .min(1, "Educational Qualification is required"),
+    PastExperience: z.string().min(1, "Past Experience is required"),
+    DateOfJoining: z.date().optional(),
+    DateOfExit: z.date().optional(),
+    Designation: z.string().min(1, "Designation is required"),
+    RoleDescription: z.string().min(1, "Role Description is required"),
+    PfAccountNo: z.string().min(1, "PF Account Number is required"),
+    UniversalAccountNo: z
+      .string()
+      .min(1, "Universal Account Number is required"),
+    Esic: z.string().min(1, "ESIC is required"),
+    BankAccountNo: z.string().min(1, "Bank Account Number is required"),
+    BankName: z.string().min(1, "Bank Name is required"),
+    Ifsc: z.string().min(1, "IFSC code is required"),
+    Aadhar: z.string().min(1, "Aadhar Number is required"),
+    Pan: z.string().min(1, "PAN Card Number is required"),
+    Wages: z.coerce.number().min(1, "Wages must be a positive number"),
+    OTType: z.string().min(1, "OT Type is required"),
+    Benefits: z.string().min(1, "Benefits is required"),
+    CompanyName: z.string().min(1, "Company is required"),
+    Tags: z.string().min(1, "Tag is required"),
+  })
+  .refine(
+    (data) => {
+      if (data.Vision === "Specs") {
+        return !!data.LeftEye && !!data.RightEye;
+      }
+      return true;
+    },
+    {
+      message: "Left Eye and Right Eye are required when Vision is Specs",
+      path: ["LeftEye", "RightEye"],
+    }
+  );
+
+export type TEmployeeMasterValidators = z.infer<
+  typeof employeeMasterValidators
 >;

@@ -1,7 +1,5 @@
-"use client";
-
+import React, { useEffect } from "react";
 import { format } from "date-fns";
-
 import { Calendar } from "@/components/ui/calendar";
 import {
   Form,
@@ -17,12 +15,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarFold, Loader2 } from "lucide-react";
-
 import { GSTDataItem } from "@/app/(Sidebar)/common-master/company-details/page";
 import { GSTTable } from "@/components/GSTTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
@@ -33,7 +29,7 @@ import {
 } from "@/components/ui/select";
 import { optionsForSelection } from "@/config/common-master-forms";
 import { cn } from "@/lib/utils";
-import { Path, UseFormReturn } from "react-hook-form";
+import { Path, UseFormReturn, PathValue } from "react-hook-form";
 
 interface FormModuleProps<T extends Record<string, any>> {
   form: UseFormReturn<T>;
@@ -42,11 +38,11 @@ interface FormModuleProps<T extends Record<string, any>> {
   setData?: (newData: GSTDataItem[]) => void;
   date?: Date | undefined;
   setDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
-
   formFields: Array<{
     name: Path<T>;
     label: string;
     type: "text" | "date" | "number" | "select";
+    conditional?: boolean;
   }>;
 }
 
@@ -72,51 +68,83 @@ function FormModule<T extends Record<string, any>>({
   formFields,
 }: FormModuleProps<T>) {
   const scrollAreaHeight = calculateScrollAreaHeight(formFields.length);
-   
+  const watchAllFields = form.watch();
+
+  const watchVision = form.watch("Vision" as Path<T>);
+
   return (
     <Form {...form}>
       <ScrollArea
         className={`overflow-y-auto`}
         style={{ height: scrollAreaHeight }}
       >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(async (data) => {
+            try {
+              console.log("Form data before submission:", data);
+              await onSubmit(data);
+            } catch (error) {
+              console.error("Error submitting form:", error);
+            }
+          })}
+          className="space-y-8"
+        >
           {formFields.map((item) => {
+            if (
+              (item.name === "LeftEye" || item.name === "RightEye") &&
+              watchVision !== "Specs"
+            ) {
+              return null;
+            }
+
             if (item.type === "date") {
               return (
-                <div key={item.name} className="flex flex-col gap-2">
-                  <Label>{item.label}</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-[240px] justify-start text-left ml-1 font-normal",
-                          !date && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarFold className="mr-2 h-4 w-4" />
-                        {date ? format(date, "PPP") : <span>Pick a date</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={date}
-                        onSelect={setDate}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
+                <FormField
+                  key={item.name}
+                  control={form.control}
+                  name={item.name}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>{item.label}</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "w-[240px] pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(field.value, "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarFold className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            // disabled={(date) =>
+                            //   date > new Date() || date < new Date("1900-01-01")
+                            // }
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               );
             }
 
-            if (
-              item.name === "CompanyName" ||
-              item.name === "Tags" ||
-              item.name == "OTType" ||
-              item.name == "Benefits"
-            ) {
+            if (item.type === "select") {
               return (
                 <FormField
                   key={item.name}
@@ -128,9 +156,13 @@ function FormModule<T extends Record<string, any>>({
                       <FormControl>
                         <Select
                           onValueChange={(value) => {
-                            form.setValue(item.name as Path<T>, value as any, {
-                              shouldValidate: true,
-                            });
+                            form.setValue(
+                              item.name,
+                              value as PathValue<T, Path<T>>,
+                              {
+                                shouldValidate: true,
+                              }
+                            );
                           }}
                           value={field.value as string}
                         >
@@ -180,9 +212,9 @@ function FormModule<T extends Record<string, any>>({
           {data && setData && <GSTTable data={data} setData={setData} />}
 
           <div className="flex justify-end mr-10">
-            <Button type="submit" className=" items-center ">
+            <Button type="submit" className="items-center">
               {form.formState.isSubmitting ? (
-                <Loader2 className=" animate-spin" />
+                <Loader2 className="animate-spin" />
               ) : (
                 "Submit"
               )}
@@ -193,4 +225,5 @@ function FormModule<T extends Record<string, any>>({
     </Form>
   );
 }
+
 export default FormModule;

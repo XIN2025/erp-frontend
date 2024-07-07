@@ -11,12 +11,12 @@ function Navbar() {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 mb-7 sm:pl-7">
-      <header className="relative border-b border-gray-300 p-2 mr-3">
+    <div className="sticky top-0 inset-x-0 z-50 mb-7 sm:pl-5 ">
+      <header className="relative border-b border-blue-300 p-2 mr-3">
         <div className="flex justify-between items-center">
           <div className="flex items-center h-10">
             <div className="flex lg:ml-0">
-              <Link href="/" className="text-blue-500">
+              <Link href="/" className="text-blue-500 sm:pl-5">
                 {!sidebarOpen && (
                   <Image
                     src="/bluelogo.png"

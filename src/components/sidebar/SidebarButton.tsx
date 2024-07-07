@@ -37,7 +37,7 @@ const SidebarButton = ({
           className={clsx(
             "group h-8 w-8 flex items-center justify-center  scale-[1.4] rounded-lg p-[3px]  cursor-pointer",
             {
-              "dark:bg-blue-300 bg-blue-100  ": pathName === href,
+              "dark:bg-blue-300 bg-blue-300  ": pathName === href,
             }
           )}
         >

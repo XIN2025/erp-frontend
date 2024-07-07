@@ -24,6 +24,7 @@ import clsx from "clsx";
 import { Separator } from "@/components/ui/separator";
 import { Database, GitBranch, LucideMousePointerClick } from "lucide-react";
 import SidebarButton from "../sidebar/SidebarButton";
+import { ScrollArea } from "../ui/scroll-area";
 
 type Props = {};
 
@@ -106,44 +107,48 @@ const MenuOptions = (props: Props) => {
   }
 
   return (
-    <nav className=" dark:bg-black h-screen    justify-between flex items-center flex-col z-30  gap-10 py-6 px-2">
-      <div className="flex items-center justify-center mt-6 flex-col gap-8">
-        {/* <Link className="flex font-bold flex-row " href="/">
+    <ScrollArea className="overflow-y-auto h-screen">
+      <nav className="dark:bg-black min-h-screen bg-blue-100 justify-between flex items-center flex-col z-30 gap-10 py-6 px-2 rounded-tr-[1.9rem] rounded-br-[1.9rem]">
+        <div className="flex items-center justify-center mt-6 flex-col gap-8">
+          {/* <Link className="flex font-bold flex-row " href="/">
           hec .
         </Link> */}
-        <TooltipProvider>
-          {navigationLinks.map((menuItem) => (
-            <ul key={menuItem.label}>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild>
-                  <li>
-                    <SidebarButton // Assuming SidebarButton component
-                      key={menuItem.href}
-                      href={menuItem.href}
-                      Icon={menuItem.Icon}
-                      label={menuItem.label}
-                      hasDropdown={menuItem.hasDropdown}
-                      onClick={handleNavigation}
-                      isDropdownItemSelected={
-                        selectedDropdown === menuItem.href
-                      }
-                    />
-                  </li>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="right"
-                  className="bg-black/10 backdrop-blur-xl"
-                >
-                  <p>{menuItem.label}</p>
-                </TooltipContent>
-              </Tooltip>
-            </ul>
-          ))}
-        </TooltipProvider>
-        <Separator />
-      </div>
-      <div className="flex items-center justify-center flex-col gap-8"></div>
-    </nav>
+
+          <TooltipProvider>
+            {navigationLinks.map((menuItem) => (
+              <ul key={menuItem.label}>
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <li>
+                      <SidebarButton // Assuming SidebarButton component
+                        key={menuItem.href}
+                        href={menuItem.href}
+                        Icon={menuItem.Icon}
+                        label={menuItem.label}
+                        hasDropdown={menuItem.hasDropdown}
+                        onClick={handleNavigation}
+                        isDropdownItemSelected={
+                          selectedDropdown === menuItem.href
+                        }
+                      />
+                    </li>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="right"
+                    className="bg-black/10 backdrop-blur-xl"
+                  >
+                    <p>{menuItem.label}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </ul>
+            ))}
+          </TooltipProvider>
+
+          <Separator />
+        </div>
+        <div className="flex items-center justify-center flex-col gap-8"></div>
+      </nav>
+    </ScrollArea>
   );
 };
 

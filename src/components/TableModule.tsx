@@ -131,7 +131,7 @@ export default function TableModule<T extends Record<string, any>>({
       case "requestBy":
         return item.created_by;
       case "date":
-        return new Date(item.created_at).toLocaleString();
+        return new Date(item.created_at || item.createdAt).toLocaleString();
       case "operation":
         return (
           <>

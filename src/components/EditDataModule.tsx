@@ -31,7 +31,7 @@ import {
 import { CalendarFold, Edit, Loader2 } from "lucide-react";
 
 import { GSTDataItem } from "@/app/(Sidebar)/common-master/company-details/page";
-import { GSTTable, GSTTableData } from "@/components/GSTTable";
+import { GSTTable } from "@/components/GSTTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -47,18 +47,16 @@ import { cn } from "@/lib/utils";
 import {
   DefaultValues,
   Path,
-  SubmitHandler,
+  PathValue,
   UseFormReturn,
   useForm,
 } from "react-hook-form";
 import { calculateScrollAreaHeight } from "./FormModule";
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
 
 interface EditDataModuleProps<T extends Record<string, any>> {
   id: string;
   form: UseFormReturn<T>;
-  // onSubmit: (values: T) => Promise<void>;
   data: Record<string, any>;
   setData?: (newData: GSTDataItem[]) => void;
   onUpdate: (id: string, values: T, gstData?: GSTDataItem[]) => Promise<void>;
@@ -81,8 +79,6 @@ export default function EditDataModule<T extends Record<string, any>>({
   pagename,
   formFields,
 }: EditDataModuleProps<T>) {
-  const router = useRouter();
-  const pathname = usePathname();
   const scrollAreaHeight = calculateScrollAreaHeight(formFields.length);
   const [formData, setFormData] = useState<Record<string, any> | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -122,9 +118,12 @@ export default function EditDataModule<T extends Record<string, any>>({
       ]);
     }
   };
+
   const editForm = useForm<T>({
     defaultValues: originalForm.getValues() as DefaultValues<T>,
   });
+
+  const watchVision = editForm.watch("Vision" as Path<T>);
 
   const findItem = (id: string) => {
     const item = data.find((item: any) => item.id === id);
@@ -163,6 +162,7 @@ export default function EditDataModule<T extends Record<string, any>>({
       });
     }
   }, [formData, isOpen, editForm]);
+
   const handleSubmit = async (values: T) => {
     try {
       if (includeGSTTable) {
@@ -215,6 +215,13 @@ export default function EditDataModule<T extends Record<string, any>>({
               className="space-y-8"
             >
               {formFields.map((item) => {
+                if (
+                  (item.name === "LeftEye" || item.name === "RightEye") &&
+                  watchVision !== "Specs"
+                ) {
+                  return null;
+                }
+
                 if (item.type === "date") {
                   return (
                     <FormField
@@ -266,12 +273,7 @@ export default function EditDataModule<T extends Record<string, any>>({
                   );
                 }
 
-                if (
-                  item.name === "CompanyName" ||
-                  item.name === "Tags" ||
-                  item.name === "OTType" ||
-                  item.name === "Benefits"
-                ) {
+                if (item.type === "select") {
                   return (
                     <FormField
                       key={item.name}
@@ -280,27 +282,35 @@ export default function EditDataModule<T extends Record<string, any>>({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>{item.label}</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger className="w-3/4 ml-1">
+                          <FormControl>
+                            <Select
+                              onValueChange={(value) => {
+                                editForm.setValue(
+                                  item.name,
+                                  value as PathValue<T, Path<T>>,
+                                  {
+                                    shouldValidate: true,
+                                  }
+                                );
+                              }}
+                              value={field.value as string}
+                            >
+                              <SelectTrigger className="w-1/2 ml-1">
                                 <SelectValue
                                   placeholder={`Select ${item.label}`}
                                 />
                               </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {optionsForSelection
-                                .find((option) => option.id === item.name)
-                                ?.values.map((value) => (
-                                  <SelectItem key={value} value={value}>
-                                    {value}
-                                  </SelectItem>
-                                ))}
-                            </SelectContent>
-                          </Select>
+                              <SelectContent>
+                                {optionsForSelection
+                                  .find((option) => option.id === item.name)
+                                  ?.values.map((value, i) => (
+                                    <SelectItem key={i} value={value}>
+                                      {value}
+                                    </SelectItem>
+                                  ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}

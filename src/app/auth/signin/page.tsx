@@ -84,11 +84,15 @@ export default function SignIn() {
     <div className="bg-blue-500 min-h-screen flex justify-center items-center p-4">
       <div className="w-[85vw] h-[85vh] mx-auto flex flex-col md:flex-row rounded-2xl bg-white overflow-hidden shadow-lg">
         <div className="w-full md:w-1/2 flex flex-col p-8 relative">
-          <div className="text-center mt-7  sm:-mb-[7rem] ">
-            <h1 className="text-3xl mb-2 tracking-tighter text-blue-400 font-bold">
-              HEC GROUP
-            </h1>
-            <h2 className="text-5xl tracking-tighter font-bold">
+          <div className="text-center mt-10 sm:-mb-[9rem] flex flex-col items-center">
+            <Image
+              src="/bluelogo.png"
+              width={200}
+              height={180}
+              alt="logo"
+              className="mb-4"
+            />
+            <h2 className="text-5xl tracking-tighter font-bold font-weight-extrabold">
               Welcome Back
             </h2>
           </div>

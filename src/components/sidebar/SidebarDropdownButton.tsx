@@ -80,11 +80,11 @@ function SidebarDropdownButton({
                   return candidates.DropDownContent.map((candidate) => (
                     <div
                       key={candidate.label}
-                      className=" flex p-3  items-center  w-full"
+                      className=" flex rounded-lg p-3 cursor-pointer hover:bg-blue-100 items-center  w-full"
                       onClick={() => onClick(candidate.href)}
                     >
                       <span
-                        className={`flex w-full text-base ml-3 items-center justify-center      ${
+                        className={`flex w-full text-base ml-3  items-center justify-center      ${
                           pathname === candidate.href ? "  text-blue-600 " : ""
                         }`}
                       >
