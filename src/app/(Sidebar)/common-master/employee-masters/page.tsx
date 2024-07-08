@@ -22,17 +22,17 @@ import { useEffect, useState } from "react";
 import FormModule from "@/components/FormModule";
 import LoadingDots from "@/components/Loading";
 
-import { EmployeeMasterHeaders } from "@/config/common-master-headers";
+import { EmployeeMasterHeaders } from "@/config/common-master/common-master-headers";
 import { apiClient } from "@/lib/utils";
 import {
   employeeMasterValidators,
   TEmployeeMasterValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { EmployeeMaster } from "@/config/common-master-forms";
+import { EmployeeMaster } from "@/config/common-master/formFields";
 
 const PAGENAME: string = "Employee Master";
 

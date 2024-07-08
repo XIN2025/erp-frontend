@@ -26,12 +26,12 @@ import {
   CompanyDetails,
   GoodsReceipt,
   InvoiceType,
-} from "@/config/common-master-forms";
+} from "@/config/common-master/formFields";
 import { ApiError, apiClient } from "@/lib/utils";
 import {
   TinvoiceTypeValidators,
   invoiceTypeValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -40,7 +40,7 @@ import {
   CompanyDetailsHeaders,
   GoodsReceiptHeader,
   InvoiceTypeHeaders,
-} from "@/config/common-master-headers";
+} from "@/config/common-master/common-master-headers";
 import LoadingDots from "@/components/Loading";
 import { useRouter } from "next/navigation";
 

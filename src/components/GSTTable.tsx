@@ -13,11 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formTableHeaders, states } from "@/config/common-master-forms";
+
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { Fragment } from "react";
 import { z } from "zod";
 import { Input } from "./ui/input";
+import { states } from "@/config/OptionsForSelection";
+import { formTableHeaders } from "@/config/common-master/formFields";
 
 export interface GSTTableData {
   SerialNo: number;

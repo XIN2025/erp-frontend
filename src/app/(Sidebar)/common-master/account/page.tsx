@@ -21,13 +21,13 @@ import { useEffect, useState } from "react";
 
 import FormModule from "@/components/FormModule";
 import LoadingDots from "@/components/Loading";
-import { Account } from "@/config/common-master-forms";
-import { AccountHeaders } from "@/config/common-master-headers";
+import { Account } from "@/config/common-master/formFields";
+import { AccountHeaders } from "@/config/common-master/common-master-headers";
 import { apiClient } from "@/lib/utils";
 import {
   TaccountValidators,
   accountValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

@@ -27,9 +27,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { optionsForSelection } from "@/config/common-master-forms";
+
 import { cn } from "@/lib/utils";
 import { Path, UseFormReturn, PathValue } from "react-hook-form";
+import { optionsForSelection } from "@/config/OptionsForSelection";
 
 interface FormModuleProps<T extends Record<string, any>> {
   form: UseFormReturn<T>;

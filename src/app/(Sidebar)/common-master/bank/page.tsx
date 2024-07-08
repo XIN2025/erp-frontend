@@ -26,17 +26,17 @@ import {
   Machine,
   MachineClass,
   RecoveryType,
-} from "@/config/common-master-forms";
+} from "@/config/common-master/formFields";
 import {
   BankHeaders,
   MachineClassHeaders,
   RecoveryTypeHeaders,
-} from "@/config/common-master-headers";
+} from "@/config/common-master/common-master-headers";
 import { apiClient } from "@/lib/utils";
 import {
   TbankValidators,
   bankValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

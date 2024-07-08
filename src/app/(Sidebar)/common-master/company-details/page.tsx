@@ -21,16 +21,16 @@ import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import FormModule from "@/components/FormModule";
-import { CompanyDetails } from "@/config/common-master-forms";
+import { CompanyDetails } from "@/config/common-master/formFields";
 import { ApiError, apiClient } from "@/lib/utils";
 import {
   TcompanyDetailsValidtor,
   companyDetailsValidtor,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { CompanyDetailsHeaders } from "@/config/common-master-headers";
+import { CompanyDetailsHeaders } from "@/config/common-master/common-master-headers";
 import LoadingDots from "@/components/Loading";
 import { useRouter } from "next/navigation";
 

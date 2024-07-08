@@ -21,18 +21,18 @@ import { useEffect, useState } from "react";
 
 import FormModule from "@/components/FormModule";
 import LoadingDots from "@/components/Loading";
-import { ShiftMaster } from "@/config/common-master-forms";
+import { ShiftMaster } from "@/config/common-master/formFields";
 
 import { apiClient } from "@/lib/utils";
 import {
   shiftMasterValidators,
   TshiftMasterValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ShiftMasterHeaders } from "@/config/common-master-headers";
+import { ShiftMasterHeaders } from "@/config/common-master/common-master-headers";
 
 const PAGENAME: string = "Shift Master";
 

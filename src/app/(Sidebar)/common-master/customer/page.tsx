@@ -22,13 +22,13 @@ import { v4 as uuidv4 } from "uuid";
 
 import FormModule from "@/components/FormModule";
 import LoadingDots from "@/components/Loading";
-import { Customer } from "@/config/common-master-forms";
-import { CustomerHeaders } from "@/config/common-master-headers";
+import { Customer } from "@/config/common-master/formFields";
+import { CustomerHeaders } from "@/config/common-master/common-master-headers";
 import { apiClient } from "@/lib/utils";
 import {
   TcustomerValidator,
   customerValidator,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

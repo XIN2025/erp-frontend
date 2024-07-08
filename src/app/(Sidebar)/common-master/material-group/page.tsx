@@ -21,16 +21,16 @@ import { useEffect, useState } from "react";
 
 import FormModule from "@/components/FormModule";
 import LoadingDots from "@/components/Loading";
-import { Account, MaterialGroup } from "@/config/common-master-forms";
+import { Account, MaterialGroup } from "@/config/common-master/formFields";
 import {
   AccountHeaders,
   MaterialGroupHeaders,
-} from "@/config/common-master-headers";
+} from "@/config/common-master/common-master-headers";
 import { apiClient } from "@/lib/utils";
 import {
   TmaterialGroupValidators,
   materialGroupValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

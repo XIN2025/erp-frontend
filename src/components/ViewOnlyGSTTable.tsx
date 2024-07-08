@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formTableHeaders } from "@/config/common-master-forms";
+import { formTableHeaders } from "@/config/common-master/formFields";
 
 export interface GSTTableData {
   SerialNo: number;

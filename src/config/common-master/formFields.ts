@@ -24,136 +24,7 @@ import {
   TunitsOFMeasurementValidators,
   TvendorValidators,
   TwarehouseValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
-
-export const states = [
-  "Andhra Pradesh",
-  "Arunachal Pradesh",
-  "Assam",
-  "Bihar",
-  "Chhattisgarh",
-  "Goa",
-  "Gujarat",
-  "Haryana",
-  "Himachal Pradesh",
-  "Jharkhand",
-  "Karnataka",
-  "Kerala",
-  "Madhya Pradesh",
-  "Maharashtra",
-  "Manipur",
-  "Meghalaya",
-  "Mizoram",
-  "Nagaland",
-  "Odisha",
-  "Punjab",
-  "Rajasthan",
-  "Sikkim",
-  "Tamil Nadu",
-  "Telangana",
-  "Tripura",
-  "Uttarakhand",
-  "Uttar Pradesh",
-  "West Bengal",
-];
-
-export const optionsForSelection = [
-  {
-    id: "CompanyName",
-    label: "Company Name",
-    values: ["Hindustan Engineering Corporation", "F N Construction PVT LTD"],
-  },
-  {
-    id: "Tags",
-    label: "Tag",
-    values: ["Active", "Inactive"],
-  },
-  {
-    id: "EmployeeType",
-    label: "Employee Type",
-    values: ["Permanent", "Temporary"],
-  },
-  {
-    id: "GSTStatus",
-    label: "GST Status",
-    values: ["Registered", "Unregistered"],
-  },
-  {
-    id: "VendorTag",
-    label: "Vendor Tag",
-    values: ["Sub-Contractor", "Sub-Supplier"],
-  },
-  {
-    id: "OTType",
-    label: "OT Type",
-    values: ["Single", "Double", "One and half time", "Not applicable"],
-  },
-  {
-    id: "Benefits",
-    label: "Benefits",
-    values: ["BNF01"],
-  },
-  {
-    id: "CostType",
-    label: "Cost Type",
-    values: ["Direct Cost", "Indirect Cost"],
-  },
-  {
-    id: "MachineOwnership",
-    label: "Machine Ownership",
-    values: ["Hired", "Owned"],
-  },
-  {
-    id: "State",
-    label: "State",
-    values: states,
-  },
-  {
-    id: "ApplicableFor",
-    label: "Applicable For",
-    values: ["Employee", "Workmen", "Both"],
-  },
-  {
-    id: "CategoryTag",
-    label: "Category Tags",
-    values: ["Material", "Machine", "Spare"],
-  },
-  {
-    id: "Gender",
-    label: "Gender",
-    values: ["Male", "Female", "Other"],
-  },
-  {
-    id: "MaritalStatus",
-    label: "Marital Status",
-    values: ["Married", "Unmarried"],
-  },
-  {
-    id: "Component",
-    label: "Component",
-    values: ["Labour", "Material", "Machine", "Overhead", "Combined"],
-  },
-  {
-    id: "SkillCategory",
-    label: "Skill Category",
-    values: ["Highly Skilled", "Semi Skilled", "Skilled", "Unskilled"],
-  },
-  {
-    id: "Vision",
-    label: "Vision",
-    values: ["Normal", "Specs"],
-  },
-  {
-    id: "WagesType",
-    label: "Wages Type",
-    values: ["Daily", "Monthly"],
-  },
-  {
-    id: "GroupCategory",
-    label: "Group Category",
-    values: ["Regular", "Service", "Machine"],
-  },
-];
+} from "@/lib/validators/common-master-form-validators";
 
 export const CompanyDetails: Array<{
   name: keyof TcompanyDetailsValidtor;
@@ -464,7 +335,7 @@ export const Account: Array<{
   {
     name: "Ledger",
     label: "Ledger",
-    type: "text",
+    type: "select",
   },
   {
     name: "ActivityCode",

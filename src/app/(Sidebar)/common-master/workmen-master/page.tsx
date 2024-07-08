@@ -26,18 +26,18 @@ import {
   MachineClass,
   RecoveryType,
   WorkmenDetails,
-} from "@/config/common-master-forms";
+} from "@/config/common-master/formFields";
 import {
   MachineClassHeaders,
   MachineHeaders,
   RecoveryTypeHeaders,
   WorkmenMasterHeaders,
-} from "@/config/common-master-headers";
+} from "@/config/common-master/common-master-headers";
 import { apiClient } from "@/lib/utils";
 import {
   TWorkmenDetailsValidators,
   workmenDetailsValidators,
-} from "@/lib/validators/common-master-form-validators/form-validators";
+} from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

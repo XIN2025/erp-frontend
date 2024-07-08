@@ -42,7 +42,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { optionsForSelection } from "@/config/common-master-forms";
 import { cn } from "@/lib/utils";
 import {
   DefaultValues,
@@ -53,6 +52,7 @@ import {
 } from "react-hook-form";
 import { calculateScrollAreaHeight } from "./FormModule";
 import { useEffect, useState } from "react";
+import { optionsForSelection } from "@/config/OptionsForSelection";
 
 interface EditDataModuleProps<T extends Record<string, any>> {
   id: string;
