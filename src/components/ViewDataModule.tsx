@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/tooltip";
 import { Eye, CheckCircle, XCircle, FileQuestion } from "lucide-react";
 import { GSTDataItem } from "@/app/(Sidebar)/common-master/company-details/page";
-import { GSTTable, GSTTableData } from "@/components/GSTTable";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
@@ -58,8 +57,7 @@ export default function ViewDataModule<T extends Record<string, any>>({
       GSTAddress: " ",
     },
   ]);
-  console.log("formData", formData);
-  console.log("gst data", gstData);
+
   const extractAndSetGSTData = (formData: any) => {
     if (formData && formData.Gsts && Array.isArray(formData.Gsts)) {
       const extractedGSTData = formData.Gsts.map((gst: any) => ({

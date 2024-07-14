@@ -33,6 +33,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { EmployeeMaster } from "@/config/common-master/formFields";
+import { useCompanyDetailsOrOptions } from "@/hooks/useCompanyDetailsOrOptions";
 
 const PAGENAME: string = "Employee Master";
 
@@ -142,18 +143,6 @@ function Page() {
 
   const handleCreate = async (values: TEmployeeMasterValidators) => {
     try {
-      // const formattedValues = {
-      //   ...values,
-
-      //   DateOfBirth: values.DateOfBirth
-      //     ? values.DateOfBirth.toISOString()
-      //     : null,
-      //   DateOfJoining: values.DateOfJoining
-      //     ? values.DateOfJoining.toISOString()
-      //     : null,
-      //   DateOfExit: values.DateOfExit ? values.DateOfExit.toISOString() : null,
-      // };
-      // console.log("fomatted calues", formattedValues);
       const response = await apiClient.post(
         "/commonMaster/employeeMaster/create",
         values
@@ -232,10 +221,6 @@ function Page() {
     return null;
   }
 
-  if (isLoading) {
-    return <LoadingDots />;
-  }
-
   return (
     <MaxWidthWrapper className=" max-w-screen-2xl ">
       <h1 className=" text-5xl my-12 tracking-tighter font-bold text-center w-full text-zinc-700">
@@ -291,7 +276,7 @@ function Page() {
           currentItemID={currentItemID}
           setCurrentItemID={setCurrentItemID}
           onDelete={handleDelete}
-          onAprrove={handleApprove}
+          onApprove={handleApprove}
           onReject={handleReject}
           date={date}
           setDate={setDate}

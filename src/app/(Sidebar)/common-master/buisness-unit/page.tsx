@@ -59,6 +59,7 @@ function Page() {
   const [date, setDate] = useState<Date>();
   const [currentItemID, setCurrentItemID] = useState<string | undefined>("");
   const [isLoading, setIsloading] = useState<boolean>(false);
+
   const form = useForm<TbusinessUnitValidator>({
     resolver: zodResolver(businessUnitValidator),
     defaultValues: {
@@ -231,6 +232,8 @@ function Page() {
                 date={date}
                 setDate={setDate}
                 formFields={BusinessUnit}
+                // dynamicOptions={dynamicOptions}
+                // companyDetails={companyDetails}
               />
             </DialogContent>
           </Dialog>
@@ -240,18 +243,18 @@ function Page() {
           data={businessUnit}
           tableName={PAGENAME}
           header={BusinessUnitHeaders}
-          includeGSTTable={false}
+          // companyDetails={companyDetails}
           form={form}
-          // onSubmit={handleCreate}
           onUpdate={handleUpdate}
+          includeGSTTable={false}
           currentItemID={currentItemID}
           setCurrentItemID={setCurrentItemID}
           onDelete={handleDelete}
-          // setData={setData}
-          onAprrove={handleApprove}
+          onApprove={handleApprove}
           onReject={handleReject}
           date={date}
           setDate={setDate}
+          // dynamicOptions={dynamicOptions}
           formFields={BusinessUnit}
         />
       </div>

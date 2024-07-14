@@ -295,11 +295,14 @@ function Page() {
               <FormModule<TcompanyDetailsValidtor>
                 form={form}
                 onSubmit={handleCreate}
-                data={gstData}
-                setData={setGSTData}
+                gstData={gstData}
+                isCompanyDetailsPage={true}
+                setGSTData={setGSTData}
                 date={date}
                 setDate={setDate}
                 formFields={CompanyDetails}
+                companyDetails={companyDetail}
+                includeGSTTable={true}
               />
             </DialogContent>
           </Dialog>
@@ -317,7 +320,7 @@ function Page() {
           setCurrentItemID={setCurrentItemID}
           onDelete={handleDelete}
           // setData={setData}
-          onAprrove={handleApprove}
+          onApprove={handleApprove}
           onReject={handleReject}
           date={date}
           setDate={setDate}

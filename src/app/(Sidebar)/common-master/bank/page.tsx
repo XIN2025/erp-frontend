@@ -257,7 +257,7 @@ function Page() {
           setCurrentItemID={setCurrentItemID}
           onDelete={handleDelete}
           // setData={setData}
-          onAprrove={handleApprove}
+          onApprove={handleApprove}
           onReject={handleReject}
           date={date}
           setDate={setDate}

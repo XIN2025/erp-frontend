@@ -1,39 +1,16 @@
-todo---
-    
-  
-    machine
- 
- 
- 
- 
-shift master
- 
- 
+todo----
+ fetch benefits froom benefits master in employee master
+ the options are not working in edit modules
  
  
  
 
 
 
-Completed----
-    Common master--
-        company detatils
-        busniness Unit
-        currency
-        cost center
-        warehouse
-        goods Receipt type
-        Invoice Type
-        Recovery Type
-        machine class
-        uom
-        activity
-        bank
-        account
-        Material
-        Material Group
-        Machine Group
-        Machine
-        Major SC Item Group
-        SC Item Code Request
-        benefits master
+working as required-----
+    company detatils
+    businessUnit
+    customer
+    employee master
+    cost center
+    warehouse

@@ -1,3 +1,5 @@
+import { apiClient } from "@/lib/utils";
+
 export const states = [
   "Andhra Pradesh",
   "Arunachal Pradesh",
@@ -29,12 +31,7 @@ export const states = [
   "West Bengal",
 ];
 
-export const optionsForSelection = [
-  {
-    id: "CompanyName",
-    label: "Company Name",
-    values: ["Hindustan Engineering Corporation", "F N Construction PVT LTD"],
-  },
+export const staticOptions = [
   {
     id: "Tags",
     label: "Tag",
@@ -51,6 +48,11 @@ export const optionsForSelection = [
     values: ["Registered", "Unregistered"],
   },
   {
+    id: "AccountType",
+    label: "Account Type",
+    values: ["Equity", "Liabilities", "Assets", "Income", "Expanses"],
+  },
+  {
     id: "VendorTag",
     label: "Vendor Tag",
     values: ["Sub-Contractor", "Sub-Supplier"],
@@ -59,11 +61,6 @@ export const optionsForSelection = [
     id: "OTType",
     label: "OT Type",
     values: ["Single", "Double", "One and half time", "Not applicable"],
-  },
-  {
-    id: "Benefits",
-    label: "Benefits",
-    values: ["BNF01"],
   },
   {
     id: "CostType",
@@ -151,5 +148,34 @@ export const optionsForSelection = [
     id: "GroupCategory",
     label: "Group Category",
     values: ["Regular", "Service", "Machine"],
+  },
+];
+
+type OptionItem = {
+  id: string;
+  label: string;
+  values: string[];
+};
+
+export const optionsForSelection: OptionItem[] = [
+  {
+    id: "CompanyName",
+    label: "Company Name",
+    values: [],
+  },
+  {
+    id: "Benefits",
+    label: "Benefits",
+    values: [],
+  },
+  // {
+  //   id: "UOM",
+  //   label: "UOM Code",
+  //   values: [],
+  // },
+  {
+    id: "CostCenterName",
+    label: "Cost Center Name",
+    values: [],
   },
 ];

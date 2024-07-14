@@ -285,9 +285,10 @@ function Page() {
               <FormModule<TwarehouseValidators>
                 form={form}
                 onSubmit={handleCreate}
-                data={gstData}
-                setData={setGSTData}
+                gstData={gstData}
+                setGSTData={setGSTData}
                 formFields={Warehouse}
+                includeGSTTable={true}
               />
             </DialogContent>
           </Dialog>
@@ -305,7 +306,7 @@ function Page() {
           setCurrentItemID={setCurrentItemID}
           onDelete={handleDelete}
           // setData={setData}
-          onAprrove={handleApprove}
+          onApprove={handleApprove}
           onReject={handleReject}
           formFields={Warehouse}
         />

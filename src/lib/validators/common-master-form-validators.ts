@@ -248,7 +248,7 @@ export const benefitsMasterValidators = z.object({
     .string()
     .min(1, "Percentage of Basic Wage is required!"),
   ApplicableFor: z.string().min(1, "Applicable For is required!"),
-  Account: z.string().min(1, "Account field is required!"),
+  AccountCode: z.string().min(1, "Account field is required!"),
   AccountDescription: z.string().min(1, "Account Description is required!"),
   Tags: z.string().optional(),
 });
@@ -262,7 +262,8 @@ export const majorScItemGroupValidators = z.object({
     .string()
     .min(1, "Major SC Item Group Code is required!"),
   MajorSCItemGroupStatus: z.string().min(1, "Status is required!"),
-  Uom: z.string().min(1, "Unit of Measure is required!"),
+  MajorSCItemGroupDescription: z.string().min(1, "Description is required!"),
+  UOM: z.string().min(1, "Unit of Measure is required!"),
   GroupCategory: z.string().min(1, "Group Category is required!"),
 
   Tags: z.string().optional(),
@@ -425,7 +426,8 @@ export const employeeMasterValidators = z
     Pan: z.string().min(1, "PAN Card Number is required"),
     Wages: z.coerce.number().min(1, "Wages must be a positive number"),
     OTType: z.string().min(1, "OT Type is required"),
-    Benefits: z.string().min(1, "Benefits is required"),
+    Benefits: z.string().optional(),
+    // Benefits: z.string().min(1, "Benefits is required"),
     CompanyName: z.string().min(1, "Company is required"),
     Tags: z.string().min(1, "Tag is required"),
   })

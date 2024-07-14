@@ -1,7 +1,6 @@
 "use client";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import TableModule from "@/components/TableModule";
-
 import {
   Dialog,
   DialogContent,
@@ -15,27 +14,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-import { FilePlus2, Loader2, Loader2Icon } from "lucide-react";
+import { FilePlus2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-
 import FormModule from "@/components/FormModule";
-import { CompanyDetails, CostCenter } from "@/config/common-master/formFields";
-import { ApiError, apiClient } from "@/lib/utils";
+import { CostCenter } from "@/config/common-master/formFields";
+import { apiClient } from "@/lib/utils";
 import {
   TcostCenterValidator,
   costCenterValidator,
 } from "@/lib/validators/common-master-form-validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, UseFormReturn, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import {
-  CompanyDetailsHeaders,
-  CostCenterHeaders,
-} from "@/config/common-master/common-master-headers";
+import { CostCenterHeaders } from "@/config/common-master/common-master-headers";
 import LoadingDots from "@/components/Loading";
 import { useRouter } from "next/navigation";
+import { useCompanyDetailsOrOptions } from "@/hooks/useCompanyDetailsOrOptions";
 
 const PAGENAME: string = "Cost Center";
 
@@ -55,6 +50,9 @@ function Page() {
   const [date, setDate] = useState<Date>();
   const [currentItemID, setCurrentItemID] = useState<string | undefined>("");
   const [isLoading, setIsloading] = useState<boolean>(false);
+
+  const { loading, dynamicOptions, companyDetails, fetchRequiredData } =
+    useCompanyDetailsOrOptions();
   const form = useForm<TcostCenterValidator>({
     resolver: zodResolver(costCenterValidator),
     defaultValues: {
@@ -98,7 +96,6 @@ function Page() {
           Gsts: typeof formattedGstData;
         } = {
           ...values,
-
           Gsts: formattedGstData,
         };
 
@@ -144,6 +141,7 @@ function Page() {
       }
     });
   };
+
   const handleCreate = async (values: TcostCenterValidator) => {
     try {
       const filterData = (data: GSTDataItem[]) => {
@@ -240,26 +238,27 @@ function Page() {
     return null;
   }
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return <LoadingDots />;
   }
+
   return (
-    <MaxWidthWrapper className=" max-w-screen-2xl ">
-      <h1 className=" text-5xl my-12 tracking-tighter font-bold text-center w-full text-zinc-700">
+    <MaxWidthWrapper className="max-w-screen-2xl">
+      <h1 className="text-5xl my-12 tracking-tighter font-bold text-center w-full text-zinc-700">
         {PAGENAME}
       </h1>
-      <div className="mt-10   ">
-        <div className="w-full flex  lg:pr-[8.2rem]  pr-[5.5rem] justify-end">
+      <div className="mt-10">
+        <div className="w-full flex lg:pr-[8.2rem] pr-[5.5rem] justify-end">
           <Dialog open={isDialogOpen} onOpenChange={handleDialogChange}>
             <DialogTrigger>
               <TooltipProvider delayDuration={300}>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
-                      className="group flex items-center  "
+                      className="group flex items-center"
                       onClick={openDialog}
                     >
-                      <div className="flex -mr-2  mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden items-center justify-center bg-background  selection: dark:bg-neutral-700 group-hover:bg-blue-600">
+                      <div className="flex -mr-2 mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden items-center justify-center bg-background selection: dark:bg-neutral-700 group-hover:bg-blue-600">
                         <FilePlus2
                           className="group-hover:text-white transition text-blue-600"
                           size={25}
@@ -277,15 +276,19 @@ function Page() {
               <DialogHeader>
                 <DialogTitle className="text-center">{PAGENAME}</DialogTitle>
               </DialogHeader>
-              <FormModule<TcostCenterValidator>
-                form={form}
-                onSubmit={handleCreate}
-                data={gstData}
-                setData={setGSTData}
-                date={date}
-                setDate={setDate}
-                formFields={CostCenter}
-              />
+              <div className="space-y-6">
+                <FormModule<TcostCenterValidator>
+                  form={form}
+                  onSubmit={handleCreate}
+                  date={date}
+                  setDate={setDate}
+                  formFields={CostCenter}
+                  dynamicOptions={dynamicOptions}
+                  gstData={gstData}
+                  setGSTData={setGSTData}
+                  includeGSTTable={true}
+                />
+              </div>
             </DialogContent>
           </Dialog>
         </div>
@@ -294,18 +297,18 @@ function Page() {
           data={costCenter}
           tableName={PAGENAME}
           header={CostCenterHeaders}
+          companyDetails={companyDetails}
           form={form}
-          // onSubmit={handleCreate}
           onUpdate={handleUpdate}
           includeGSTTable={true}
           currentItemID={currentItemID}
           setCurrentItemID={setCurrentItemID}
           onDelete={handleDelete}
-          // setData={setData}
-          onAprrove={handleApprove}
+          onApprove={handleApprove}
           onReject={handleReject}
           date={date}
           setDate={setDate}
+          dynamicOptions={dynamicOptions}
           formFields={CostCenter}
         />
       </div>

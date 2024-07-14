@@ -31,7 +31,7 @@ export const CompanyDetails: Array<{
   label: string;
   type: "text" | "date" | "number" | "select";
 }> = [
-  { name: "CompanyName", label: "Company Name", type: "select" },
+  { name: "CompanyName", label: "Company Name", type: "text" },
   {
     name: "RegisteredOfficeAddress",
     label: "Registered Office Address",
@@ -121,7 +121,7 @@ export const Customer: Array<{
   { name: "CustomerName", label: "Customer Name", type: "text" },
   { name: "CorporateOffice", label: "Corporate Office", type: "text" },
   { name: "RegisteredOffice", label: "Registered Office", type: "text" },
-  { name: "Phone", label: "Phone", type: "text" },
+  { name: "Phone", label: "Phone", type: "number" },
   { name: "Email", label: "Email", type: "text" },
   { name: "Website", label: "Website", type: "text" },
   { name: "PAN", label: "PAN", type: "text" },
@@ -160,7 +160,7 @@ export const Warehouse: Array<{
 }> = [
   { name: "CompanyName", label: "Company Name", type: "select" },
 
-  { name: "CostCenterName", label: "Currency Name", type: "text" },
+  { name: "CostCenterName", label: "Cost Center Name", type: "select" },
   { name: "WareHouseName", label: "Warehouse Name", type: "text" },
   { name: "ProjectSiteAddress", label: "Project Site Address", type: "text" },
 
@@ -194,7 +194,7 @@ export const InvoiceType: Array<{
   label: string;
   type: "text" | "date" | "number" | "select";
 }> = [
-  { name: "AccountCode", label: "Account Code", type: "text" },
+  { name: "AccountCode", label: "Account Code", type: "select" },
   { name: "InvoiceType", label: "Invoice Type ", type: "text" },
   { name: "InvoiceTypeCode", label: "Invoice Type Code", type: "text" },
 
@@ -205,7 +205,7 @@ export const RecoveryType: Array<{
   label: string;
   type: "text" | "date" | "number" | "select";
 }> = [
-  { name: "AccountCode", label: "Account Code", type: "text" },
+  { name: "AccountCode", label: "Account Code", type: "select" },
   { name: "RecoveryType", label: "Recovery Type ", type: "text" },
   { name: "RecoveryTypeCode", label: "Recovery Type Code", type: "text" },
 
@@ -218,7 +218,7 @@ export const UnitsOfMeasurement: Array<{
 }> = [
   { name: "UOMCode", label: "UOM Code", type: "text" },
   { name: "UOMDescription", label: "UOM Description", type: "text" },
-  { name: "AllowableDecimal", label: "Allowable Decimal ", type: "text" },
+  { name: "AllowableDecimal", label: "Allowable Decimal ", type: "number" },
 
   { name: "Tags", label: "Tags", type: "select" },
 ];
@@ -230,7 +230,7 @@ export const Activity: Array<{
   { name: "ActivityCode", label: "Activity Code", type: "text" },
   { name: "ActivityDescription", label: "Activity Description", type: "text" },
   { name: "CostType", label: "Cost Type ", type: "select" },
-  { name: "UOM", label: "UOM Code", type: "text" },
+  { name: "UOM", label: "UOM Code", type: "select" },
 
   { name: "Tags", label: "Tags", type: "select" },
 ];
@@ -242,7 +242,7 @@ export const SCItemCode: Array<{
   {
     name: "MajorSCItemGroupCode",
     label: "Major SC Item Group Code",
-    type: "text",
+    type: "select",
   },
   {
     name: "MajorSCItemGroupDescription",
@@ -251,7 +251,7 @@ export const SCItemCode: Array<{
   },
   { name: "Component", label: "Component", type: "select" },
   { name: "ComponentPercentage", label: "Component Percentage", type: "text" },
-  { name: "UOM", label: "Unit of Measure", type: "text" },
+  { name: "UOM", label: "UOM Code", type: "select" },
   { name: "Tags", label: "Tags", type: "select" },
 ];
 
@@ -262,7 +262,7 @@ export const Machine: Array<{
 }> = [
   { name: "MachineCode", label: "Machine Code", type: "text" },
   { name: "MachineDescription", label: "Machine Description", type: "text" },
-  { name: "MachineGroupCode", label: "Machine Group Code", type: "text" },
+  { name: "MachineGroupCode", label: "Machine Group Code", type: "select" },
   {
     name: "MachineGroupDescription",
     label: "Machine Group Description",
@@ -325,7 +325,7 @@ export const Account: Array<{
   {
     name: "AccountType",
     label: "Account Type",
-    type: "text",
+    type: "select",
   },
   {
     name: "SubAccountType",
@@ -340,7 +340,7 @@ export const Account: Array<{
   {
     name: "ActivityCode",
     label: "Activity Code",
-    type: "text",
+    type: "select",
   },
   {
     name: "ActivityDescription",
@@ -401,7 +401,7 @@ export const Material: Array<{
   label: string;
   type: "text" | "number" | "select";
 }> = [
-  { name: "MaterialGroupCode", label: "Material Group Code", type: "text" },
+  { name: "MaterialGroupCode", label: "Material Group Code", type: "select" },
   { name: "MaterialCode", label: "Material Code", type: "text" },
   { name: "MaterialDescription", label: "Material Description", type: "text" },
   {
@@ -409,7 +409,7 @@ export const Material: Array<{
     label: "Material Additional Description",
     type: "text",
   },
-  { name: "UOM", label: "Unit of Measure", type: "text" },
+  { name: "UOM", label: "Unit of Measure", type: "select" },
   { name: "Tags", label: "Tags", type: "select" },
 ];
 
@@ -429,7 +429,7 @@ export const MachineGroup: Array<{
     label: "Machine Group Long Description",
     type: "text",
   },
-  { name: "MachineClassCode", label: "Machine Class Code", type: "text" },
+  { name: "MachineClassCode", label: "Machine Class Code", type: "select" },
   {
     name: "MachineClassDescription",
     label: "Machine Class Description",
@@ -448,10 +448,10 @@ export const BenefitsMaster: Array<{
   {
     name: "PercentageOfBasicWage",
     label: "Percentage of Basic Wage",
-    type: "text",
+    type: "number",
   },
   { name: "ApplicableFor", label: "Applicable For", type: "select" },
-  { name: "Account", label: "Account", type: "text" },
+  { name: "AccountCode", label: "Account", type: "select" },
   { name: "AccountDescription", label: "Account Description", type: "text" },
   { name: "Tags", label: "Tags", type: "select" },
 ];
@@ -466,8 +466,17 @@ export const MajorScItemGroup: Array<{
     label: "Major SC Item Group Code",
     type: "text",
   },
-  { name: "MajorSCItemGroupStatus", label: "Status", type: "text" },
-  { name: "Uom", label: "Unit of Measure", type: "text" },
+  {
+    name: "MajorSCItemGroupStatus",
+    label: "Major SC Item Group Status",
+    type: "text",
+  },
+  {
+    name: "MajorSCItemGroupDescription",
+    label: "Major SC Item Group Description",
+    type: "text",
+  },
+  { name: "UOM", label: "Unit of Measure", type: "select" },
   { name: "GroupCategory", label: "Group Category", type: "select" },
   { name: "Tags", label: "Tags", type: "select" },
 ];
@@ -506,19 +515,19 @@ export const WorkmenDetails: Array<{
   { name: "MotherTongue", label: "Mother Tongue", type: "text" },
   { name: "PresentAddress", label: "Present Address", type: "text" },
   { name: "PermanentAddress", label: "Permanent Address", type: "text" },
-  { name: "Phone", label: "Phone Number", type: "text" },
+  { name: "Phone", label: "Phone Number", type: "number" },
   {
     name: "EmergencyContactNumber",
     label: "Emergency Contact Number",
-    type: "text",
+    type: "number",
   },
   { name: "MaritalStatus", label: "Marital Status", type: "select" },
   { name: "IdentificationMark", label: "Identification Mark", type: "text" },
   { name: "HeightCm", label: "Height (cm)", type: "number" },
   { name: "WeightKg", label: "Weight (kg)", type: "number" },
   { name: "Vision", label: "Vision", type: "select" },
-  { name: "LeftEye", label: "Left Eye", type: "text", conditional: true },
-  { name: "RightEye", label: "Right Eye", type: "text", conditional: true },
+  { name: "LeftEye", label: "Left Eye", type: "number", conditional: true },
+  { name: "RightEye", label: "Right Eye", type: "number", conditional: true },
   {
     name: "EducationalQualification",
     label: "Educational Qualification",
@@ -548,7 +557,7 @@ export const WorkmenDetails: Array<{
   { name: "BankAccountNo", label: "Bank Account Number", type: "text" },
   { name: "BankName", label: "Bank Name", type: "text" },
   { name: "Ifsc", label: "IFSC code", type: "text" },
-  { name: "Aadhar", label: "Aadhar Number", type: "text" },
+  { name: "Aadhar", label: "Aadhar Number", type: "number" },
   { name: "Pan", label: "PAN Card Number", type: "text" },
   { name: "Wages", label: "Wages (in rupees)", type: "number" },
   { name: "WagesType", label: "Wages Type", type: "select" },
@@ -559,7 +568,7 @@ export const WorkmenDetails: Array<{
 export const Vendor: Array<{
   name: keyof TvendorValidators;
   label: string;
-  type: "text" | "select";
+  type: "text" | "select" | "number";
 }> = [
   {
     name: "VendorCode",
@@ -584,7 +593,7 @@ export const Vendor: Array<{
   {
     name: "Phone",
     label: "Phone",
-    type: "text",
+    type: "number",
   },
   {
     name: "Email",
@@ -662,11 +671,11 @@ export const EmployeeMaster: Array<{
   { name: "MotherTongue", label: "Mother Tongue", type: "text" },
   { name: "PresentAddress", label: "Present Address", type: "text" },
   { name: "PermanentAddress", label: "Permanent Address", type: "text" },
-  { name: "Phone", label: "Phone Number", type: "text" },
+  { name: "Phone", label: "Phone Number", type: "number" },
   {
     name: "EmergencyContactNumber",
     label: "Emergency Contact Number",
-    type: "text",
+    type: "number",
   },
   { name: "MaritalStatus", label: "Marital Status", type: "select" },
   { name: "IdentificationMark", label: "Identification Mark", type: "text" },
@@ -695,7 +704,7 @@ export const EmployeeMaster: Array<{
   { name: "BankAccountNo", label: "Bank Account Number", type: "text" },
   { name: "BankName", label: "Bank Name", type: "text" },
   { name: "Ifsc", label: "IFSC code", type: "text" },
-  { name: "Aadhar", label: "Aadhar Number", type: "text" },
+  { name: "Aadhar", label: "Aadhar Number", type: "number" },
   { name: "Pan", label: "PAN Card Number", type: "text" },
   { name: "Wages", label: "Wages (in rupees)", type: "number" },
   { name: "OTType", label: "OT Type", type: "select" },

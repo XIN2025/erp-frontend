@@ -286,8 +286,9 @@ function Page() {
               <FormModule<TcustomerValidator>
                 form={form}
                 onSubmit={handleCreate}
-                data={gstData}
-                setData={setGSTData}
+                gstData={gstData}
+                setGSTData={setGSTData}
+                includeGSTTable={true}
                 formFields={Customer}
               />
             </DialogContent>
@@ -306,7 +307,7 @@ function Page() {
           setCurrentItemID={setCurrentItemID}
           onDelete={handleDelete}
           // setData={setData}
-          onAprrove={handleApprove}
+          onApprove={handleApprove}
           onReject={handleReject}
           formFields={Customer}
         />
