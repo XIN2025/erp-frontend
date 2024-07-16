@@ -24,12 +24,11 @@ function Logout() {
             : undefined,
       });
 
-      router.push("/auth/signin");
+      window.location.href = "/auth/signin";
     } catch (error) {
       console.error("Error during logout:", error);
     }
   };
-
   return (
     <div>
       <TooltipProvider>

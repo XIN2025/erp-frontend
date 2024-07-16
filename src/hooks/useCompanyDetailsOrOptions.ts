@@ -65,7 +65,9 @@ export function useCompanyDetailsOrOptions() {
               response.data.success &&
               Array.isArray(response.data.allCompanyDetails)
             ) {
-              const companyData = response.data.allCompanyDetails;
+              const companyData = response.data.allCompanyDetails.filter(
+                (company: CompanyDetail) => company.Tags.includes("Active")
+              );
               setCompanyDetails(companyData);
               const companyNames = companyData.map(
                 (company: CompanyDetail) => company.CompanyName
@@ -81,10 +83,12 @@ export function useCompanyDetailsOrOptions() {
               "/commonMaster/benefitsMaster/allBenefitsMaster"
             );
             if (response.data.success) {
-              const benefitCodes = response.data.allBenefitsMaster.map(
-                (benefit: any) =>
-                  `${benefit.BenefitCode}-${benefit.BenefitDescription}`
-              );
+              const benefitCodes = response.data.allBenefitsMaster
+                .filter((benefit: any) => benefit.Tags.includes("Active"))
+                .map(
+                  (benefit: any) =>
+                    `${benefit.BenefitCode}-${benefit.BenefitDescription}`
+                );
               setDynamicOptions((prevOptions) => ({
                 ...prevOptions,
                 Benefits: benefitCodes,
@@ -96,7 +100,10 @@ export function useCompanyDetailsOrOptions() {
               "/commonMaster/costCenter/allCostCenter"
             );
             if (response.data.success) {
-              setAllCostCenters(response.data.allCostCenter);
+              const activeCostCenters = response.data.allCostCenter.filter(
+                (costCenter: any) => costCenter.Tags.includes("Active")
+              );
+              setAllCostCenters(activeCostCenters);
             }
             break;
           case "UOM":
@@ -104,9 +111,9 @@ export function useCompanyDetailsOrOptions() {
               "/commonMaster/unitOfMeasurement/allUnitOfMeasurement"
             );
             if (response.data.success) {
-              const UOMCode = response.data.allUnitOfMeasurements.map(
-                (UOM: any) => UOM.UOMCode
-              );
+              const UOMCode = response.data.allUnitOfMeasurements
+                .filter((UOM: any) => UOM.Tags.includes("Active"))
+                .map((UOM: any) => UOM.UOMCode);
               setDynamicOptions((prevOptions) => ({
                 ...prevOptions,
                 UOM: UOMCode,
@@ -118,10 +125,12 @@ export function useCompanyDetailsOrOptions() {
               "/commonMaster/materialGroup/allMaterialGroup"
             );
             if (response.data.success) {
-              const material = response.data.allMaterialGroup.map(
-                (material: any) =>
-                  `${material.MaterialGroupCode}-${material.MaterialMajorGroupDescription}-${material.MaterialMinorGroupDescription}-${material.MaterialSubGroupDescription}`
-              );
+              const material = response.data.allMaterialGroup
+                .filter((material: any) => material.Tags.includes("Active"))
+                .map(
+                  (material: any) =>
+                    `${material.MaterialGroupCode}-${material.MaterialMajorGroupDescription}-${material.MaterialMinorGroupDescription}-${material.MaterialSubGroupDescription}`
+                );
 
               setDynamicOptions((prevOptions) => ({
                 ...prevOptions,
@@ -134,9 +143,12 @@ export function useCompanyDetailsOrOptions() {
               "/commonMaster/machineGroup/allMachineGroup"
             );
 
-            setAllMachineGroups(response.data.allMachineGroup);
+            const activeMachineGroups = response.data.allMachineGroup.filter(
+              (machine: any) => machine.Tags.includes("Active")
+            );
+            setAllMachineGroups(activeMachineGroups);
             if (response.data.success) {
-              const MachineGroupCode = response.data.allMachineGroup.map(
+              const MachineGroupCode = activeMachineGroups.map(
                 (machine: any) =>
                   `${machine.MachineGroupCode}-${machine.MachineGroupDescription}`
               );
@@ -151,9 +163,12 @@ export function useCompanyDetailsOrOptions() {
             response = await apiClient.get(
               "/commonMaster/machineClass/allMachineClass"
             );
-            setAllMachineClasses(response.data.allMachineClasses);
+            const activeMachineClasses = response.data.allMachineClasses.filter(
+              (machine: any) => machine.Tags.includes("Active")
+            );
+            setAllMachineClasses(activeMachineClasses);
             if (response.data.success) {
-              const MachineClassCode = response.data.allMachineClasses.map(
+              const MachineClassCode = activeMachineClasses.map(
                 (machine: any) => `${machine.MachineClassCode}`
               );
 
@@ -167,9 +182,12 @@ export function useCompanyDetailsOrOptions() {
             response = await apiClient.get(
               "/commonMaster/activity/allActivity"
             );
-            setAllactivity(response.data.allActivities);
+            const activeActivities = response.data.allActivities.filter(
+              (activity: any) => activity.Tags.includes("Active")
+            );
+            setAllactivity(activeActivities);
             if (response.data.success) {
-              const ActivityCode = response.data.allActivities.map(
+              const ActivityCode = activeActivities.map(
                 (activity: any) => `${activity.ActivityCode}`
               );
 
@@ -181,9 +199,12 @@ export function useCompanyDetailsOrOptions() {
             break;
           case "AccountCode":
             response = await apiClient.get("/commonMaster/account/allAccount");
-            setAllaccounts(response.data.allAccounts);
+            const activeAccounts = response.data.allAccounts.filter(
+              (account: any) => account.Tags.includes("Active")
+            );
+            setAllaccounts(activeAccounts);
             if (response.data.success) {
-              const AccountCode = response.data.allAccounts.map(
+              const AccountCode = activeAccounts.map(
                 (account: any) =>
                   `${account.AccountCode}-${account.AccountDescription}`
               );
@@ -198,13 +219,16 @@ export function useCompanyDetailsOrOptions() {
             response = await apiClient.get(
               "/commonMaster/majorSCItemGroup/allMajorSCItemGroup"
             );
-            setAllMajorScItemGroups(response.data.allMajorSCItemGroup);
+            const activeMajorSCItemGroups =
+              response.data.allMajorSCItemGroup.filter((item: any) =>
+                item.Tags.includes("Active")
+              );
+            setAllMajorScItemGroups(activeMajorSCItemGroups);
             if (response.data.success) {
-              const MajorSCItemGroupCode =
-                response.data.allMajorSCItemGroup.map(
-                  (MajorSCItemGroup: any) =>
-                    `${MajorSCItemGroup.MajorSCItemGroupCode}`
-                );
+              const MajorSCItemGroupCode = activeMajorSCItemGroups.map(
+                (MajorSCItemGroup: any) =>
+                  `${MajorSCItemGroup.MajorSCItemGroupCode}`
+              );
 
               setDynamicOptions((prevOptions) => ({
                 ...prevOptions,
