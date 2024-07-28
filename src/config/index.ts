@@ -239,6 +239,35 @@ export const DropDownMenu = [
       },
     ],
   },
+  {
+    parent: "Sales Accounting System",
+    DropDownContent: [
+      {
+        label: "Project Circular",
+        href: "/sales-accounting-system/project-circular",
+      },
+      {
+        label: "Sales Order",
+        href: "/sales-accounting-system/sales-order",
+      },
+      {
+        label: "Sales Order Amendment",
+        href: "/sales-accounting-system/sales-order-amendment",
+      },
+      {
+        label: "Sales Invoice",
+        href: "/sales-accounting-system/sales-invoice",
+      },
+      {
+        label: "Sales Inovice Certification",
+        href: "/sales-accounting-system/sales-inovice-certification",
+      },
+      {
+        label: "Reports",
+        href: "/sales-accounting-system/reports",
+      },
+    ],
+  },
 ];
 
 export const materialManagement = [

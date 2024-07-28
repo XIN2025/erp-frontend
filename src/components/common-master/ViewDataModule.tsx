@@ -18,13 +18,14 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
-import { calculateScrollAreaHeight } from "./FormModule";
+
 import { ViewOnlyGSTTable } from "./ViewOnlyGSTTable";
+import { calculateScrollAreaHeight } from "../FormModule";
 
 interface ViewDataModuleProps<T> {
   id: string;
   data: T[];
-  incudeGSTTable: boolean;
+  includeGSTTable: boolean;
   pagename: string;
 
   formFields: Array<{
@@ -39,7 +40,7 @@ interface ViewDataModuleProps<T> {
 export default function ViewDataModule<T extends Record<string, any>>({
   id,
   data,
-  incudeGSTTable,
+  includeGSTTable,
   pagename,
 
   formFields,
@@ -143,7 +144,7 @@ export default function ViewDataModule<T extends Record<string, any>>({
               </div>
             ))}
 
-            {incudeGSTTable && gstData && gstData.length > 0 && (
+            {includeGSTTable && gstData && gstData.length > 0 && (
               <div>
                 <h3 className="font-medium mb-2">GST Details</h3>
                 <ViewOnlyGSTTable data={gstData} />

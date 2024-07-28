@@ -1,54 +1,3 @@
-// import React, { useEffect } from "react";
-// import { GSTTable, GSTTableData } from "./GSTTable";
-
-// interface GSTTableCostCenterProps {
-//   gstData: GSTTableData[];
-//   setGSTData: React.Dispatch<React.SetStateAction<GSTTableData[]>>;
-//   companyDetails: any[];
-//   selectedCompany: string;
-// }
-
-// const GSTTableCostCenter: React.FC<GSTTableCostCenterProps> = ({
-//   gstData,
-//   setGSTData,
-//   companyDetails,
-//   selectedCompany,
-// }) => {
-//   useEffect(() => {
-//     if (selectedCompany && companyDetails) {
-//       const selectedCompanyDetails = companyDetails.find(
-//         (company) => company.CompanyName === selectedCompany
-//       );
-
-//       if (selectedCompanyDetails && selectedCompanyDetails.Gsts) {
-//         const formattedGstData = selectedCompanyDetails.Gsts.map(
-//           (gst: any, index: number) => ({
-//             SerialNo: index + 1,
-//             GSTRegNo: gst.GSTRegNo || "",
-//             GSTState: gst.GSTState || "",
-//             GSTAddress: gst.GSTAddress || "",
-//           })
-//         );
-
-//         setGSTData(formattedGstData);
-//       } else {
-//         // If no GST data is found for the selected company, set an empty row
-//         setGSTData([
-//           {
-//             SerialNo: 1,
-//             GSTRegNo: "",
-//             GSTState: "",
-//             GSTAddress: "",
-//           },
-//         ]);
-//       }
-//     }
-//   }, [selectedCompany, companyDetails, setGSTData]);
-
-//   return <GSTTable data={gstData} setData={setGSTData} />;
-// };
-
-// export default GSTTableCostCenter;
 import React, { useEffect } from "react";
 import {
   Table,
@@ -82,7 +31,7 @@ interface ModularGSTTableProps {
   gstData: GSTTableData[];
   setGSTData: (newData: GSTTableData[]) => void;
   companyDetails?: any[];
-  selectedCompany: string;
+  selectedCompany?: string;
 }
 
 export const ModularGSTTable: React.FC<ModularGSTTableProps> = ({
@@ -105,8 +54,7 @@ export const ModularGSTTable: React.FC<ModularGSTTableProps> = ({
             GSTAddress: gst.GSTAddress || "",
           }))
         );
-      } else {
-        // Reset to default state if no GST data is found for the selected company
+      } else if (gstData.length === 0) {
         setGSTData([
           {
             SerialNo: 1,
@@ -117,7 +65,7 @@ export const ModularGSTTable: React.FC<ModularGSTTableProps> = ({
         ]);
       }
     }
-  }, [selectedCompany, companyDetails, setGSTData]);
+  }, [selectedCompany, companyDetails, setGSTData, gstData.length]);
 
   const addRow = () => {
     setGSTData([

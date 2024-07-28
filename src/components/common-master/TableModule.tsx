@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { usePathname } from "next/navigation";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import { CalendarFold, Edit, Search, View } from "lucide-react";
 import { addDays, format } from "date-fns";
 import { DateRange } from "react-day-picker";
@@ -32,10 +32,10 @@ import {
 } from "@/components/ui/select";
 import ViewDataModule from "./ViewDataModule";
 import EditDataModule from "./EditDataModule";
-import DeleteDataModule from "./DeleteDataModule";
+import DeleteDataModule from "../DeleteDataModule";
 import { Path, UseFormReturn } from "react-hook-form";
 import { GSTDataItem } from "@/app/(Sidebar)/common-master/company-details/page";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "../ui/scroll-area";
 import { useCompanyDetailsOrOptions } from "@/hooks/useCompanyDetailsOrOptions";
 
 interface Header {
@@ -156,7 +156,6 @@ export default function TableModule<T extends Record<string, any>>({
   };
 
   function monthDayYear(d: Date) {
-    console.log("date", d);
     const parsedDate = new Date(d);
     let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(
       parsedDate
@@ -181,11 +180,11 @@ export default function TableModule<T extends Record<string, any>>({
         return (
           <>
             {data && (
-              <div className="flex -ml-4 sm:-ml-10 justify-center">
+              <div className="flex -ml-4 sm:-ml-10 items-center justify-center">
                 <ViewDataModule
                   onApprove={onApprove}
                   onReject={onReject}
-                  incudeGSTTable={includeGSTTable}
+                  includeGSTTable={includeGSTTable}
                   pagename={tableName}
                   formFields={formFields}
                   data={data}

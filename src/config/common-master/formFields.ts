@@ -666,6 +666,7 @@ export const EmployeeMaster: Array<{
   { name: "EmployeeFirstName", label: "Employee First Name", type: "text" },
   { name: "EmployeeLastName", label: "Employee Last Name", type: "text" },
   { name: "Email", label: "Email", type: "text" },
+  { name: "Password", label: "Password", type: "text" },
   { name: "Gender", label: "Gender", type: "select" },
   { name: "Religion", label: "Religion", type: "text" },
   { name: "MotherTongue", label: "Mother Tongue", type: "text" },

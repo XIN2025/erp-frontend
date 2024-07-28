@@ -1,6 +1,6 @@
 "use client";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import TableModule from "@/components/TableModule";
+import TableModule from "@/components/common-master/TableModule";
 import {
   Dialog,
   DialogContent,

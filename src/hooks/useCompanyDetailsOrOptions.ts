@@ -120,6 +120,23 @@ export function useCompanyDetailsOrOptions() {
               }));
             }
             break;
+          case "EmployeeCode":
+            response = await apiClient.get(
+              "/commonMaster/employeeMaster/allEmployeeMaster"
+            );
+            if (response.data.success) {
+              const EmployeeCode = response.data.allEmployeeMaster
+                .filter((Employee: any) => Employee.Tags.includes("Active"))
+                .map(
+                  (Employee: any) =>
+                    `${Employee.EmployeeCode}-${Employee.EmployeeFirstName}-${Employee.EmployeeLastName}`
+                );
+              setDynamicOptions((prevOptions) => ({
+                ...prevOptions,
+                EmployeeCode,
+              }));
+            }
+            break;
           case "MaterialGroupCode":
             response = await apiClient.get(
               "/commonMaster/materialGroup/allMaterialGroup"

@@ -390,6 +390,7 @@ export const employeeMasterValidators = z
       .string()
       .email("Please enter a valid email address")
       .min(1, "Email is required!"),
+    Password: z.string().min(1, "Password is required!"),
     Gender: z.string().min(1, "Gender is required"),
     Religion: z.string().min(1, "Religion is required"),
     MotherTongue: z.string().min(1, "Mother Tongue is required"),

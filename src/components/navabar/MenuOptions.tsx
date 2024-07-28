@@ -120,7 +120,7 @@ const MenuOptions = (props: Props) => {
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <li>
-                      <SidebarButton // Assuming SidebarButton component
+                      <SidebarButton
                         key={menuItem.href}
                         href={menuItem.href}
                         Icon={menuItem.Icon}
