@@ -54,6 +54,7 @@ import { staticOptions } from "@/config/OptionsForSelection";
 import { useCompanyDetailsOrOptions } from "@/hooks/useCompanyDetailsOrOptions";
 import LoadingDots from "../Loading";
 import ModularGSTTable from "./ModularGSTTable";
+import DatePickerField from "../DatePickerField";
 
 interface EditDataModuleProps<T extends Record<string, any>> {
   id: string;
@@ -82,8 +83,7 @@ export default function EditDataModule<T extends Record<string, any>>({
   setData,
   pagename,
   formFields,
-  isCompanyDetailsPage, // companyDetails,
-  // dynamicOptions,
+  isCompanyDetailsPage,
 }: EditDataModuleProps<T>) {
   const scrollAreaHeight = calculateScrollAreaHeight(formFields.length);
   const [formData, setFormData] = useState<Record<string, any> | null>(null);
@@ -101,7 +101,7 @@ export default function EditDataModule<T extends Record<string, any>>({
   const editForm = useForm<T>({
     defaultValues: originalForm.getValues() as DefaultValues<T>,
   });
-
+  console.log(data);
   const watchCompanyName = editForm.watch("CompanyName" as Path<T>);
   const watchVision = editForm.watch("Vision" as Path<T>);
   const [mounted, setMounted] = useState(false);
@@ -257,8 +257,8 @@ export default function EditDataModule<T extends Record<string, any>>({
         if (key in editForm.getValues()) {
           if (key === "COIDate") {
             const dateValue = item[key] ? new Date(item[key]) : undefined;
-            setDate(dateValue);
-            editForm.setValue(key as Path<T>, dateValue as any);
+
+            editForm.setValue(key as Path<T>, dateValue?.toISOString() as any);
           } else {
             editForm.setValue(key as Path<T>, item[key] as any);
           }
@@ -267,7 +267,6 @@ export default function EditDataModule<T extends Record<string, any>>({
     }
     setIsOpen(true);
   };
-
   useEffect(() => {
     if (formData && isOpen) {
       Object.keys(formData).forEach((key) => {
@@ -277,14 +276,13 @@ export default function EditDataModule<T extends Record<string, any>>({
               ? new Date(formData[key])
               : undefined;
             setDate(dateValue);
-            editForm.setValue(key as Path<T>, dateValue as any);
+            editForm.setValue(key as Path<T>, dateValue?.toISOString() as any);
           } else {
             editForm.setValue(key as Path<T>, formData[key] as any);
           }
         }
       });
 
-      // Set the cost center value
       if (formData.CostCenterName) {
         editForm.setValue(
           "CostCenterName" as Path<T>,
@@ -292,7 +290,6 @@ export default function EditDataModule<T extends Record<string, any>>({
         );
       }
 
-      // Update cost centers based on the selected company
       if (formData.CompanyName) {
         updateCostCenters(formData.CompanyName);
       }
@@ -312,10 +309,20 @@ export default function EditDataModule<T extends Record<string, any>>({
 
   const handleSubmit = async (values: T) => {
     try {
+      const coiDate = editForm.getValues("COIDate" as Path<T>);
+      const formattedCOIDate = coiDate
+        ? new Date(coiDate).toISOString().split("T")[0]
+        : undefined;
+      console.log("formatttedCeeOjIDate", formattedCOIDate);
+      const updatedValues = {
+        ...values,
+        COIDate: formattedCOIDate,
+      } as T;
+      console.log(updatedValues);
       if (includeGSTTable) {
-        await onUpdate(id, values, gstData);
+        await onUpdate(id, updatedValues, gstData);
       } else {
-        await onUpdate(id, values);
+        await onUpdate(id, updatedValues);
       }
       setIsOpen(false);
     } catch (error) {
@@ -393,7 +400,7 @@ export default function EditDataModule<T extends Record<string, any>>({
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, "PPP")
+                                    format(new Date(field.value), "PPP")
                                   ) : (
                                     <span>Pick a date</span>
                                   )}
@@ -407,8 +414,14 @@ export default function EditDataModule<T extends Record<string, any>>({
                             >
                               <Calendar
                                 mode="single"
-                                selected={field.value}
-                                onSelect={field.onChange}
+                                selected={
+                                  field.value
+                                    ? new Date(field.value)
+                                    : undefined
+                                }
+                                onSelect={(date) =>
+                                  field.onChange(date?.toISOString())
+                                }
                                 disabled={(date) =>
                                   date > new Date() ||
                                   date < new Date("1900-01-01")
@@ -423,6 +436,16 @@ export default function EditDataModule<T extends Record<string, any>>({
                     />
                   );
                 }
+
+                // if (item.type === "date") {
+                //   return (
+                //     <DatePickerField
+                //       key={item.name}
+                //       item={item}
+                //       editForm={editForm}
+                //     />
+                //   );
+                // }
 
                 if (item.type === "select") {
                   return (

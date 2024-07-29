@@ -1,16 +1,44 @@
-todo----
- fetch benefits froom benefits master in employee master
- the options are not working in edit modules
- 
- 
- 
+  {
+    userId: '8f4a3557-3461-459b-b867-39c1bf042d69',
+    employeeCode: 'zom',
+    firstName: 'ewqe',
+    lastName: 'ewq',
+    workingOnArray: [
+      {
+        CompanyName: 'dekhte hai',
+        BusinessUnit: 'fdfs',
+        Role: 'Site Incharge',
+        ProjectCodeName: 'sfa',
+        Modules: [
+          { ModuleName: 'Common Master', Permissions: [ 'VIEW', 'CANCEL' ] },
+          {
+            ModuleName: 'Project HR Management',
+            Permissions: [ 'VIEW', 'CANCEL', 'APPROVE' ]
+          }
+        ]
+      }
+    ]
+  }
 
-
-
-working as required-----
-    company detatils
-    businessUnit
-    customer
-    employee master
-    cost center
-    warehouse
+  {
+    userId: '8f4a3557-3461-459b-b867-39c1bf042d69',
+    employeeCode: 'zom',
+    firstName: 'ewqe',
+    lastName: 'ewq',
+    workingOnArray: [
+      {
+        CompanyName: 'test company',
+        BusinessUnit: 'new name',
+        Role: 'Commercial Assistant',
+        ProjectCodeName: 'ffq',
+        Modules: [
+          { ModuleName: 'Common Master', Permissions: [ 'VIEW', 'CANCEL' ] },
+          { ModuleName: 'Project HR Management', Permissions: [ 'VIEW', 'ADD' ] },
+          {
+            ModuleName: 'Workforce Management',
+            Permissions: [ 'VIEW', 'CANCEL' ]
+          }
+        ]
+      }
+    ]
+  }

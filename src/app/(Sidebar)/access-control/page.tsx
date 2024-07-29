@@ -58,6 +58,10 @@ function Page() {
     setIsDialogOpen(open);
   };
 
+  const onFormSubmitSuccess = () => {
+    fetchAccessControl();
+  };
+
   const handleUpdate = (
     id: string,
     values: TaccessControlValdiators,
@@ -96,34 +100,34 @@ function Page() {
     });
   };
 
-  const handleCreate = async (
-    values: TaccessControlValdiators,
-    roleData: RoleDataItem[]
-  ) => {
-    try {
-      const response = await apiClient.post(
-        "/accessControl/accessRequest/create",
-        {
-          ...values,
-          roleData,
-        }
-      );
-      if (response.data.success) {
-        await new Promise<void>((resolve) => {
-          toast.success("Access Control created successfully!", {
-            onAutoClose: () => resolve(),
-          });
-        });
-        closeDialog();
-        fetchAccessControl();
-      } else {
-        toast.error("Failed to create Access Control");
-      }
-    } catch (error) {
-      console.log("error", error);
-      toast.error("An error occurred while creating Access Control");
-    }
-  };
+  // const handleCreate = async (
+  //   values: TaccessControlValdiators,
+  //   roleData: RoleDataItem[]
+  // ) => {
+  //   try {
+  //     const response = await apiClient.post(
+  //       "/accessControl/accessRequest/create",
+  //       {
+  //         ...values,
+  //         roleData,
+  //       }
+  //     );
+  //     if (response.data.success) {
+  //       await new Promise<void>((resolve) => {
+  //         toast.success("Access Control created successfully!", {
+  //           onAutoClose: () => resolve(),
+  //         });
+  //       });
+  //       closeDialog();
+  //       fetchAccessControl();
+  //     } else {
+  //       toast.error("Failed to create Access Control");
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //     toast.error("An error occurred while creating Access Control");
+  //   }
+  // };
 
   const handleDelete = async (id: string) => {
     try {
@@ -158,8 +162,11 @@ function Page() {
         "/accessControl/accessRequest/getAllUser"
       );
       setIsLoading(false);
-      console.log("get Access Control response", response);
-      setAccessControlData(response.data.allUsers);
+      console.log("get Access Control response", response.data.allUsers);
+      const userWithRoles = response.data.allUsers.filter(
+        (user: any) => user.roles.length !== 0
+      );
+      setAccessControlData(userWithRoles);
     } catch (error) {
       setIsLoading(false);
       console.log("error", error);
@@ -225,6 +232,7 @@ function Page() {
                 form={form}
                 onClose={closeDialog}
                 formFields={AccessControl}
+                onFormSubmitSuccess={onFormSubmitSuccess}
               />
             </DialogContent>
           </Dialog>

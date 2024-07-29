@@ -34,6 +34,7 @@ interface FormModuleProps<T extends Record<string, any>> {
     label: string;
     type: "text" | "date" | "number" | "select";
   }>;
+  onFormSubmitSuccess: () => void;
 }
 
 export const calculateScrollAreaHeight = (fieldCount: number) => {
@@ -47,6 +48,7 @@ function AccessControlForm<T extends Record<string, any>>({
   form,
   onClose,
   formFields,
+  onFormSubmitSuccess,
 }: FormModuleProps<T>) {
   const scrollAreaHeight = calculateScrollAreaHeight(formFields.length);
   const router = useRouter();
@@ -146,7 +148,7 @@ function AccessControlForm<T extends Record<string, any>>({
       console.log("access form response", response);
       toast.success("Access request sent successfully!");
       onClose();
-      router.refresh();
+      onFormSubmitSuccess();
     } catch (error) {
       toast.error("Something went wrong! Please try again later.");
     }

@@ -110,7 +110,7 @@ function Page() {
           Gsts: typeof formattedGstData;
         } = {
           ...values,
-          COIDate: date || undefined,
+          // COIDate: date || undefined,
           Gsts: formattedGstData,
         };
 
@@ -121,15 +121,15 @@ function Page() {
             }
           }
         );
-
+        console.log(formData.COIDate);
         const backendData = {
           ...formData,
-          COIDate: formData.COIDate
-            ? formData.COIDate.toISOString().split("T")[0]
-            : undefined,
+          // COIDate: formData.COIDate
+          //   ? formData.COIDate.toISOString().split("T")[0]
+          //   : undefined,
         };
 
-        console.log("Request data:", backendData);
+        console.log("Requesfasft data:", backendData);
 
         const response = await apiClient.put(
           `/commonMaster/companyDetails/update/${id}`,

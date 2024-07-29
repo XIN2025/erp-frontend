@@ -146,10 +146,10 @@ export default function AccessControlEditDataModule({
       );
 
       const formattedData = {
-        userId: selectedEmployee?.id,
-        employeeCode: selectedEmployee?.employeeCode,
-        firstName: selectedEmployee?.firstName,
-        lastName: selectedEmployee?.lastName,
+        // userId: selectedEmployee?.id,
+        // employeeCode: selectedEmployee?.employeeCode,
+        // firstName: selectedEmployee?.firstName,
+        // lastName: selectedEmployee?.lastName,
         workingOnArray: roleData.map(
           ({ CompanyName, BusinessUnit, Role, ProjectCodeName, Modules }) => ({
             CompanyName,
@@ -160,12 +160,12 @@ export default function AccessControlEditDataModule({
           })
         ),
       };
-
+      console.log("formdatteddata", formattedData);
       const response = await apiClient.put(
         `/accessControl/accessRequest/update/${id}`,
         formattedData
       );
-
+      console.log("respnse", response);
       if (response.data.success) {
         setIsOpen(false);
         toast.success("Access Control updated successfully!");
