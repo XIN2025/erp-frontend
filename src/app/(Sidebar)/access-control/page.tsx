@@ -68,15 +68,10 @@ function Page() {
     roleData?: RoleDataItem[]
   ) => {
     return new Promise<void>(async (resolve, reject) => {
-      const formattedData = {
-        ...values,
-        roleData,
-      };
-      console.log("update datea", formattedData);
       try {
         const response = await apiClient.put(
           `/accessControl/accessRequest/update/${id}`,
-          formattedData
+          values
         );
         console.log("Response:", response);
         if (response.data.success) {
@@ -86,15 +81,17 @@ function Page() {
             });
           });
           closeDialog();
+          await fetchAccessControl();
+          router.refresh();
+          window.location.reload();
           resolve();
         } else {
-          toast.error("Failed to update Access Control");
+          // toast.error("Failed to update Access Control");
           reject(new Error("Failed to update Access Control"));
         }
-        fetchAccessControl();
       } catch (error) {
         console.error("Error updating Access Control:", error);
-        toast.error("An error occurred while updating Access Control");
+        // toast.error("An error occurred while updating Access Control");
         reject(error);
       }
     });

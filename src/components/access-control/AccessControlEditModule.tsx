@@ -39,6 +39,7 @@ import { TaccessControlValdiators } from "@/lib/validators/access-control-valida
 import { apiClient } from "@/lib/utils";
 import EditRoleTable from "./EditRoleTable";
 import { RoleDataItem } from "./RoleTable";
+import { useRouter } from "next/navigation";
 
 interface EditDataModuleProps {
   id: string;
@@ -71,6 +72,7 @@ export default function AccessControlEditDataModule({
   pagename,
   formFields,
 }: EditDataModuleProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [roleData, setRoleData] = useState<RoleDataItem[]>([]);
   const [employeeOptions, setEmployeeOptions] = useState<
@@ -98,7 +100,7 @@ export default function AccessControlEditDataModule({
         }
       } catch (error) {
         console.error("Error fetching company options:", error);
-        toast.error("Failed to load company options. Please try again.");
+        // toast.error("Failed to load company options. Please try again.");
       }
     };
 
@@ -121,7 +123,7 @@ export default function AccessControlEditDataModule({
         }
       } catch (error) {
         console.error("Error fetching employee options:", error);
-        toast.error("Failed to load employee options. Please try again.");
+        // toast.error("Failed to load employee options. Please try again.");
       }
     };
 
@@ -160,7 +162,7 @@ export default function AccessControlEditDataModule({
           })
         ),
       };
-      console.log("formdatteddata", formattedData);
+
       const response = await apiClient.put(
         `/accessControl/accessRequest/update/${id}`,
         formattedData
@@ -172,14 +174,10 @@ export default function AccessControlEditDataModule({
         if (onUpdate) {
           await onUpdate(id, values, roleData);
         }
-      } else {
-        throw new Error(
-          response.data.message || "Failed to update Access Control"
-        );
       }
     } catch (error) {
       console.error("Error updating Access Control:", error);
-      toast.error("Failed to update Access Control. Please try again.");
+      // toast.error("Failed to update Access Control. Please try again.");
     }
   };
 
