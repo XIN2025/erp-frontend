@@ -362,7 +362,7 @@ export default function EditDataModule<T extends Record<string, any>>({
       </DialogTrigger>
       <DialogContent className="max-w-[770px]">
         <DialogHeader>
-          <DialogTitle className="text-center">{pagename}</DialogTitle>
+          <DialogTitle className="text-center">{`${pagename} (Edit)`}</DialogTitle>
         </DialogHeader>
         <Form {...editForm}>
           <ScrollArea

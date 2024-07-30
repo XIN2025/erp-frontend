@@ -94,7 +94,7 @@ export default function ViewDataModule<T extends Record<string, any>>({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[770px] max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle>{pagename}</DialogTitle>
+          <DialogTitle>{`${pagename} (View)`}</DialogTitle>
         </DialogHeader>
         <ScrollArea className="mt-4 max-h-[calc(90vh-200px)]">
           <div className="space-y-4 p-4">

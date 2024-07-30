@@ -221,7 +221,7 @@ function Page() {
             </DialogTrigger>
             <DialogContent className="max-w-[770px]">
               <DialogHeader>
-                <DialogTitle className="text-center">{PAGENAME}</DialogTitle>
+                <DialogTitle className="text-center">{`${PAGENAME} (Create)`}</DialogTitle>
               </DialogHeader>
               <FormModule<TcurrencyValidator>
                 form={form}

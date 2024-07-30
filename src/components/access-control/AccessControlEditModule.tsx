@@ -205,7 +205,7 @@ export default function AccessControlEditDataModule({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[770px]">
         <DialogHeader>
-          <DialogTitle>{pagename}</DialogTitle>
+          <DialogTitle>{`${pagename} (Edit)`}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <ScrollArea className="mt-4 max-h-[calc(90vh-200px)]">

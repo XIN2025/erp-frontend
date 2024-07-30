@@ -58,7 +58,7 @@ export default function ViewDataModule<T extends Record<string, any>>({
       GSTAddress: " ",
     },
   ]);
-console.log('compnay data ',data)
+  console.log("compnay data ", data);
   const extractAndSetGSTData = (formData: any) => {
     if (formData && formData.Gsts && Array.isArray(formData.Gsts)) {
       const extractedGSTData = formData.Gsts.map((gst: any) => ({
@@ -122,7 +122,7 @@ console.log('compnay data ',data)
       </DialogTrigger>
       <DialogContent className="max-w-[770px] max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle className="text-center">{pagename}</DialogTitle>
+          <DialogTitle className="text-center">{`${pagename} (View)`}</DialogTitle>
         </DialogHeader>
         <ScrollArea
           className={`overflow-y-auto`}

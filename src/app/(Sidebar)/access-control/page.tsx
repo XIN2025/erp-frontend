@@ -223,7 +223,7 @@ function Page() {
             </DialogTrigger>
             <DialogContent className="max-w-[950px]">
               <DialogHeader>
-                <DialogTitle className="text-center">{PAGENAME}</DialogTitle>
+                <DialogTitle className="text-center">{`${PAGENAME} (Create)`}</DialogTitle>
               </DialogHeader>
               <AccessControlForm<TaccessControlValdiators>
                 form={form}
