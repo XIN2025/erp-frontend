@@ -1,3 +1,5 @@
+// components/access-control/RoleTable.tsx
+
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -27,7 +29,7 @@ export interface Module {
 
 export interface RoleDataItem {
   CompanyName: string;
-  BusinessUnit: string;
+  BusinessUnit: string[];
   Role: string;
   ProjectCodeName: string;
   Modules: Module[];
@@ -89,7 +91,7 @@ export const RoleTable: React.FC<RoleTableProps> = ({
       ...roleData,
       {
         CompanyName: "",
-        BusinessUnit: "",
+        BusinessUnit: [],
         Role: "",
         ProjectCodeName: "",
         Modules: [],
@@ -105,7 +107,7 @@ export const RoleTable: React.FC<RoleTableProps> = ({
   const updateField = (
     index: number,
     field: keyof RoleDataItem,
-    value: string
+    value: string | string[]
   ) => {
     const updatedData = roleData.map((row, i) =>
       i === index ? { ...row, [field]: value } : row
@@ -113,7 +115,7 @@ export const RoleTable: React.FC<RoleTableProps> = ({
     setRoleData(updatedData);
 
     if (field === "CompanyName") {
-      fetchBusinessUnits(value);
+      fetchBusinessUnits(value as string);
     }
   };
 
@@ -135,6 +137,25 @@ export const RoleTable: React.FC<RoleTableProps> = ({
       setRoleData(updatedData);
     }
     closePermissionsDialog();
+  };
+
+  const handleBusinessUnitChange = (index: number, value: string) => {
+    const companyName = roleData[index].CompanyName;
+    const availableUnits = businessUnitOptions[companyName] || [];
+
+    let updatedBusinessUnits: string[];
+
+    if (value === "All") {
+      updatedBusinessUnits = [...availableUnits];
+    } else if (roleData[index].BusinessUnit.includes(value)) {
+      updatedBusinessUnits = roleData[index].BusinessUnit.filter(
+        (unit) => unit !== value
+      );
+    } else {
+      updatedBusinessUnits = [...roleData[index].BusinessUnit, value];
+    }
+
+    updateField(index, "BusinessUnit", updatedBusinessUnits);
   };
 
   return (
@@ -183,15 +204,21 @@ export const RoleTable: React.FC<RoleTableProps> = ({
               </TableCell>
               <TableCell>
                 <Select
-                  value={row.BusinessUnit}
+                  value={
+                    row.BusinessUnit.length ===
+                    businessUnitOptions[row.CompanyName]?.length
+                      ? "All"
+                      : row.BusinessUnit.join(",")
+                  }
                   onValueChange={(value) =>
-                    updateField(index, "BusinessUnit", value)
+                    handleBusinessUnitChange(index, value)
                   }
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select Business Unit" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="All">All</SelectItem>
                     {businessUnitOptions[row.CompanyName]?.map((unit) => (
                       <SelectItem key={unit} value={unit}>
                         {unit}

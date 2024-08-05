@@ -67,7 +67,7 @@ function AccessControlForm<T extends Record<string, any>>({
   const [roleData, setRoleData] = useState<RoleDataItem[]>([
     {
       CompanyName: "",
-      BusinessUnit: "",
+      BusinessUnit: [],
       Role: "",
       ProjectCodeName: "",
       Modules: [],
