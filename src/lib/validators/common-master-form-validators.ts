@@ -44,7 +44,10 @@ export const customerValidator = z.object({
     .string()
     .email("Please enter a valid email address")
     .min(1, "Email is required!"),
-  Website: z.string().min(1, "Website URL is required!"),
+  Website: z
+    .string()
+    .url("Please enter a valid website URL")
+    .min(1, "Website URL is required!"),
   PAN: z.string().min(1, "PAN number is required!"),
   ServiceTaxRegNo: z.string().min(1, "Service Tax Reg No is required!"),
   CINLLPIN: z.string().min(1, "CIN/LLPIN number is required!"),

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -40,54 +40,70 @@ export const ModularGSTTable: React.FC<ModularGSTTableProps> = ({
   companyDetails,
   selectedCompany,
 }) => {
+  const [localGSTData, setLocalGSTData] = useState<GSTTableData[]>(gstData);
+
   useEffect(() => {
     if (selectedCompany && companyDetails) {
       const selectedCompanyDetails = companyDetails.find(
         (company) => company.CompanyName === selectedCompany
       );
       if (selectedCompanyDetails && selectedCompanyDetails.Gsts) {
-        setGSTData(
-          selectedCompanyDetails.Gsts.map((gst: any, index: number) => ({
+        const newGSTData = selectedCompanyDetails.Gsts.map(
+          (gst: any, index: number) => ({
             SerialNo: index + 1,
             GSTRegNo: gst.GSTRegNo || "",
             GSTState: gst.GSTState || "",
             GSTAddress: gst.GSTAddress || "",
-          }))
+          })
         );
-      } else if (gstData.length === 0) {
-        setGSTData([
+        setLocalGSTData(newGSTData);
+        setGSTData(newGSTData);
+      } else if (localGSTData.length === 0) {
+        const initialData = [
           {
             SerialNo: 1,
             GSTRegNo: "",
             GSTState: "",
             GSTAddress: "",
           },
-        ]);
+        ];
+        setLocalGSTData(initialData);
+        setGSTData(initialData);
       }
     }
-  }, [selectedCompany, companyDetails, setGSTData, gstData.length]);
+  }, [selectedCompany, companyDetails, setGSTData]);
+
+  useEffect(() => {
+    setLocalGSTData(gstData);
+  }, [gstData]);
 
   const addRow = () => {
-    setGSTData([
-      ...gstData,
+    const newData = [
+      ...localGSTData,
       {
-        SerialNo: gstData.length + 1,
+        SerialNo: localGSTData.length + 1,
         GSTRegNo: "",
         GSTState: "",
         GSTAddress: "",
       },
-    ]);
+    ];
+    setLocalGSTData(newData);
+    setGSTData(newData);
   };
 
   const removeRow = (index: number) => {
-    const updatedData = gstData.filter((_, i) => i !== index);
-    setGSTData(updatedData.map((row, i) => ({ ...row, SerialNo: i + 1 })));
+    const updatedData = localGSTData
+      .filter((_, i) => i !== index)
+      .map((row, i) => ({ ...row, SerialNo: i + 1 }));
+    setLocalGSTData(updatedData);
+    setGSTData(updatedData);
   };
 
   const updateField = (index: number, field: string, value: string) => {
-    const updatedData = gstData.map((row, i) =>
+    const updatedData = localGSTData.map((row, i) =>
       i === index ? { ...row, [field]: value } : row
     );
+    setLocalGSTData(updatedData);
     setGSTData(updatedData);
   };
 
@@ -110,7 +126,7 @@ export const ModularGSTTable: React.FC<ModularGSTTableProps> = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {gstData.map((row, index) => (
+          {localGSTData.map((row, index) => (
             <TableRow key={index}>
               {formTableHeaders.map((header) => (
                 <TableCell key={header.id}>

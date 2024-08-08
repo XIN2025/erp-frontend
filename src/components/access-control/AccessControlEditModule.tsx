@@ -37,20 +37,27 @@ import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 import { TaccessControlValdiators } from "@/lib/validators/access-control-validators";
 import { apiClient } from "@/lib/utils";
-import EditRoleTable from "./EditRoleTable";
-import { RoleDataItem } from "./RoleTable";
+import EditRoleTable, { Module } from "./EditRoleTable";
+
 import { useRouter } from "next/navigation";
 
+interface RoleDataItem {
+  CompanyName: string;
+  BusinessUnit: string;
+  Role: string;
+  ProjectCodeName: string;
+  Modules: Module[];
+}
 interface EditDataModuleProps {
   id: string;
   form: UseFormReturn<TaccessControlValdiators>;
-  data: Array<{
+  data: {
     id: string;
     EmployeeCode: string;
     first_name: string;
     last_name: string;
     roles: RoleDataItem[];
-  }>;
+  }[];
   onUpdate: (
     id: string,
     values: TaccessControlValdiators,
@@ -140,18 +147,12 @@ export default function AccessControlEditDataModule({
     }
     setIsOpen(true);
   };
-
   const handleSubmit = async (values: TaccessControlValdiators) => {
     try {
       const selectedEmployee = employeeOptions.find(
         (emp) => emp.code === values.EmployeeCode
       );
-
       const formattedData = {
-        // userId: selectedEmployee?.id,
-        // employeeCode: selectedEmployee?.employeeCode,
-        // firstName: selectedEmployee?.firstName,
-        // lastName: selectedEmployee?.lastName,
         workingOnArray: roleData.map(
           ({ CompanyName, BusinessUnit, Role, ProjectCodeName, Modules }) => ({
             CompanyName,
@@ -162,12 +163,10 @@ export default function AccessControlEditDataModule({
           })
         ),
       };
-
       const response = await apiClient.put(
         `/accessControl/accessRequest/update/${id}`,
         formattedData
       );
-      console.log("respnse", response);
       if (response.data.success) {
         setIsOpen(false);
         toast.success("Access Control updated successfully!");
@@ -177,7 +176,6 @@ export default function AccessControlEditDataModule({
       }
     } catch (error) {
       console.error("Error updating Access Control:", error);
-      // toast.error("Failed to update Access Control. Please try again.");
     }
   };
 

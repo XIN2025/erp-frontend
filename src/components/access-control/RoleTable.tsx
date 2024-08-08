@@ -138,7 +138,6 @@ export const RoleTable: React.FC<RoleTableProps> = ({
     }
     closePermissionsDialog();
   };
-
   const handleBusinessUnitChange = (index: number, value: string) => {
     const companyName = roleData[index].CompanyName;
     const availableUnits = businessUnitOptions[companyName] || [];

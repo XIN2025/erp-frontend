@@ -51,7 +51,7 @@ interface AccessControlTableProps {
   onUpdate: (
     id: string,
     values: TaccessControlValdiators,
-    roleData?: RoleDataItem[]
+    roleData: RoleDataItem[]
   ) => Promise<void>;
   date?: Date | undefined;
   setDate?: React.Dispatch<React.SetStateAction<Date | undefined>>;
@@ -74,7 +74,6 @@ interface AccessControlData {
   roles: RoleDataItem[];
   [key: string]: any;
 }
-
 export default function AccessControlTable({
   header,
   tableName,
@@ -155,7 +154,9 @@ export default function AccessControlTable({
             <AccessControlEditDataModule
               id={item.id}
               form={form}
+              //@ts-ignore
               data={data}
+              //@ts-ignore
               onUpdate={onUpdate}
               pagename={tableName}
               formFields={formFields}
