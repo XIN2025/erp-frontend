@@ -112,6 +112,9 @@ export default function EditDataModule<T extends Record<string, any>>({
   const watchMachineGroupCode = editForm.watch("MachineGroupCode" as Path<T>);
   const watchMachineClassCode = editForm.watch("MachineClassCode" as Path<T>);
   const watchAccountcode = editForm.watch("AccountCode" as Path<T>);
+  const watchCustomerName = editForm.watch("CustomerName" as Path<T>);
+  const watchCostCenterName = editForm.watch("CostCenterName" as Path<T>);
+  const watchWareHouseName = editForm.watch("WareHouse" as Path<T>);
 
   const {
     loading,
@@ -126,19 +129,50 @@ export default function EditDataModule<T extends Record<string, any>>({
     fetchRequiredData,
     updateBusinessUnits,
     udpateWarehouses,
+    updateCompanyGSTNumbers,
+    companyGSTNumbers,
+    udpateCustomerGSTNo,
+    updateCostCenterGSTNo,
+    updateWareHouseGSTNo,
   } = useCompanyDetailsOrOptions();
+
+  useEffect(() => {
+    const requiredFields = formFields
+      .filter((field) => field.type === "select")
+      .map((field) => field.name as string);
+
+    fetchRequiredData(requiredFields);
+  }, [fetchRequiredData, formFields]);
 
   useEffect(() => {
     if (watchCompanyName) {
       updateCostCenters(watchCompanyName);
       udpateWarehouses(watchCompanyName);
       updateBusinessUnits(watchCompanyName);
+      updateCompanyGSTNumbers(watchCompanyName);
+    }
+    if (watchCustomerName) {
+      udpateCustomerGSTNo(watchCustomerName);
+    }
+    if (watchCostCenterName) {
+      updateCostCenterGSTNo(watchCostCenterName);
+    }
+    if (watchWareHouseName) {
+      updateWareHouseGSTNo(watchWareHouseName);
     }
   }, [
     watchCompanyName,
     updateCostCenters,
     udpateWarehouses,
+    watchCustomerName,
     updateBusinessUnits,
+    updateCompanyGSTNumbers,
+    udpateCustomerGSTNo,
+    companyGSTNumbers,
+    watchCostCenterName,
+    updateCostCenterGSTNo,
+    watchWareHouseName,
+    updateWareHouseGSTNo,
   ]);
 
   useEffect(() => {

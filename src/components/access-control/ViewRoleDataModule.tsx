@@ -51,7 +51,7 @@ export default function ViewDataModule<T extends Record<string, any>>({
 }: ViewDataModuleProps<T>) {
   const [formData, setFormData] = useState<T | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log("formData", formData);
   const findItem = (id: string) => {
     const item = data.find((item) => item.id === id);
     if (item) {
@@ -129,7 +129,9 @@ export default function ViewDataModule<T extends Record<string, any>>({
                     {formData.roles.map((role: any, index: number) => (
                       <TableRow key={index}>
                         <TableCell>{role.CompanyName}</TableCell>
-                        <TableCell>{role.BusinessUnit}</TableCell>
+                        <TableCell>
+                          {role.BusinessUnit.map((unit: any) => `${unit}  `)}
+                        </TableCell>
                         <TableCell>{role.Role}</TableCell>
                         <TableCell>{role.ProjectCodeName}</TableCell>
                       </TableRow>

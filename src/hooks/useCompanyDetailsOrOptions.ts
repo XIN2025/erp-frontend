@@ -51,7 +51,30 @@ export function useCompanyDetailsOrOptions() {
   const [allAccounts, setAllaccounts] = useState<any[]>([]);
   const [allBusinessUnits, setAllBusninessUnits] = useState<any[]>([]);
   const [allWareHouses, setallWareHouses] = useState<any[]>([]);
-  const [companyGSTNo, setCompanyGSTNo] = useState<any[]>([]);
+  const [companyGSTNumbers, setCompanyGSTNumbers] = useState<
+    Record<string, string[]>
+  >({});
+  const [customerGSTNo, setCustomerGSTNo] = useState<Record<string, string[]>>(
+    {}
+  );
+  const [costCenterGSTNo, setCostCenterGSTNo] = useState<
+    Record<string, string[]>
+  >({});
+  const [wareHouseGSTNo, setWareHouseGSTNo] = useState<
+    Record<string, string[]>
+  >({});
+
+  useEffect(() => {
+    if (companyDetails.length > 0) {
+      const gstNumbers: Record<string, string[]> = {};
+      companyDetails.forEach((company) => {
+        gstNumbers[company.CompanyName] = company.Gsts.map(
+          (gst) => gst.GSTRegNo
+        );
+      });
+      setCompanyGSTNumbers(gstNumbers);
+    }
+  }, [companyDetails]);
 
   const fetchRequiredData = useCallback(async (requiredFields: string[]) => {
     setLoading(true);
@@ -272,7 +295,6 @@ export function useCompanyDetailsOrOptions() {
               }));
             }
             break;
-          
 
           case "AccountCode":
             response = await apiClient.get("/commonMaster/account/allAccount");
@@ -311,6 +333,63 @@ export function useCompanyDetailsOrOptions() {
                 ...prevOptions,
                 MajorSCItemGroupCode,
               }));
+            }
+            break;
+
+          case "CompanyGSTNo":
+            if (companyDetails.length > 0) {
+              const gstNumbers: Record<string, string[]> = {};
+              companyDetails.forEach((company) => {
+                gstNumbers[company.CompanyName] = company.Gsts.map(
+                  (gst) => gst.GSTRegNo
+                );
+              });
+              setCompanyGSTNumbers(gstNumbers);
+            }
+            break;
+          case "CustomerGSTNo":
+            response = await apiClient.get(
+              "/commonMaster/customer/allCustomer"
+            );
+            const customers = response.data.allCustomer;
+            if (customers.length > 0) {
+              const gstNumbers: Record<string, string[]> = {};
+              customers.forEach((customer: any) => {
+                gstNumbers[customer.CustomerName] = customer.Gsts.map(
+                  (gst: any) => gst.GSTRegNo
+                );
+              });
+              setCustomerGSTNo(gstNumbers);
+            }
+            break;
+          case "CostCenterGSTNo":
+            response = await apiClient.get(
+              "/commonMaster/costCenter/allCostCenter"
+            );
+            const costCenter = response.data.allCostCenter;
+            if (costCenter.length > 0) {
+              const gstNumbers: Record<string, string[]> = {};
+              costCenter.forEach((costCenter: any) => {
+                gstNumbers[costCenter.CostCenterName] = costCenter.Gsts.map(
+                  (gst: any) => gst.GSTRegNo
+                );
+              });
+              setCostCenterGSTNo(gstNumbers);
+            }
+            break;
+          case "WareHouseGSTNo":
+            response = await apiClient.get(
+              "/commonMaster/warehouse/allWarehouse"
+            );
+            const warehouse = response.data.allWareHouse;
+            if (warehouse.length > 0) {
+              const gstNumbers: Record<string, string[]> = {};
+              warehouse.forEach((warehouse: any) => {
+                gstNumbers[warehouse.WareHouseName] = warehouse.Gsts.map(
+                  (gst: any) => gst.GSTRegNo
+                );
+              });
+              setWareHouseGSTNo(gstNumbers);
             }
             break;
         }
@@ -362,7 +441,48 @@ export function useCompanyDetailsOrOptions() {
     },
     [allWareHouses]
   );
- 
+  const updateCompanyGSTNumbers = useCallback(
+    (selectedCompany: string) => {
+      const filteredGSTNumbers = companyGSTNumbers[selectedCompany] || [];
+      setDynamicOptions((prevOptions) => ({
+        ...prevOptions,
+        CompanyGSTNo: filteredGSTNumbers,
+      }));
+    },
+    [companyGSTNumbers]
+  );
+
+  const udpateCustomerGSTNo = useCallback(
+    (seledctedCustomer: string) => {
+      const filteredGSTNumbers = customerGSTNo[seledctedCustomer] || [];
+      setDynamicOptions((prevOptions) => ({
+        ...prevOptions,
+        CustomerGSTNo: filteredGSTNumbers,
+      }));
+    },
+    [customerGSTNo]
+  );
+
+  const updateCostCenterGSTNo = useCallback(
+    (selectedCostCenter: string) => {
+      const filteredGSTNumbers = costCenterGSTNo[selectedCostCenter] || [];
+      setDynamicOptions((prevOptions) => ({
+        ...prevOptions,
+        CostCenterGSTNo: filteredGSTNumbers,
+      }));
+    },
+    [costCenterGSTNo]
+  );
+  const updateWareHouseGSTNo = useCallback(
+    (selectedWareHouse: string) => {
+      const filteredGSTNumbers = wareHouseGSTNo[selectedWareHouse] || [];
+      setDynamicOptions((prevOptions) => ({
+        ...prevOptions,
+        WareHouseGSTNo: filteredGSTNumbers,
+      }));
+    },
+    [wareHouseGSTNo]
+  );
 
   return {
     loading,
@@ -378,6 +498,10 @@ export function useCompanyDetailsOrOptions() {
     updateBusinessUnits,
     allMachineClasses,
     udpateWarehouses,
- 
+    updateCompanyGSTNumbers,
+    companyGSTNumbers,
+    udpateCustomerGSTNo,
+    updateCostCenterGSTNo,
+    updateWareHouseGSTNo,
   };
 }

@@ -191,7 +191,7 @@ export const EditRoleTable: React.FC<EditRoleTableProps> = ({
               </TableCell>
               <TableCell>
                 <Select
-                  value={row.BusinessUnit}
+                  value={row.BusinessUnit[0]}
                   onValueChange={(value) =>
                     updateField(index, "BusinessUnit", value)
                   }

@@ -9,12 +9,14 @@ export const projectValidators = z.object({
   CustomerName: z.string().min(1, "Customer Name is required!"),
   CustomerGSTNo: z.string().optional(),
   CostCenterName: z.string().min(1, "Cost Centre is required!"),
-  CostCentreGSTNo: z.string().min(1, "Cost Centre GST is required!"),
+  CostCenterGSTNo: z.string().min(1, "Cost Centre GST is required!"),
   WareHouse: z.string().min(1, "WareHouse is required!"),
   WareHouseGSTNo: z.string().min(1, "WareHouse GST is required!"),
   DirectSub: z.string().min(1, "Direct/Sub selection is required!"),
   Owner: z.string().optional(),
-  ProjectOrderValue: z.number().positive(),
+  ProjectOrderValue: z.coerce
+    .number()
+    .min(1, "Project Order Value is required!"),
   OrderReferenceNo: z.string(),
   OrderReferenceDate: z.date(),
   OrderType: z.string().min(1, "Order Type is required!"),

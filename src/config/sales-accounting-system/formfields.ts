@@ -46,7 +46,7 @@ export const ProjectFields: Array<{
     type: "select",
   },
   {
-    name: "CostCentreGSTNo",
+    name: "CostCenterGSTNo",
     label: "Cost Centre GST No",
     type: "select",
   },

@@ -65,7 +65,7 @@ function Page() {
       CustomerName: "",
       CustomerGSTNo: "",
       CostCenterName: "",
-      CostCentreGSTNo: "",
+      CostCenterGSTNo: "",
       WareHouse: "",
       WareHouseGSTNo: "",
       DirectSub: "",
@@ -128,24 +128,25 @@ function Page() {
   };
   const handleCreate = async (values: TProjectValidators) => {
     try {
+      console.log("values", values);
       const response = await apiClient.post(
-        "/commonMaster/account/create",
+        "salesAccountingSystem/projectCircular/create",
         values
       );
       if (response.data.success) {
         await new Promise<void>((resolve) => {
-          toast.success("Account created successfully!", {
+          toast.success("Project Circular created successfully!", {
             onAutoClose: () => resolve(),
           });
         });
         closeDialog();
         fetchAccount();
       } else {
-        toast.error("Failed to create account");
+        toast.error("Failed to create Project Circular");
       }
     } catch (error) {
       console.log("error", error);
-      toast.error("An error occurred while creating account");
+      toast.error("An error occurred while creating Project Circular");
     }
   };
 
