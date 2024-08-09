@@ -101,7 +101,7 @@ export default function EditDataModule<T extends Record<string, any>>({
   const editForm = useForm<T>({
     defaultValues: originalForm.getValues() as DefaultValues<T>,
   });
-  console.log(data);
+
   const watchCompanyName = editForm.watch("CompanyName" as Path<T>);
   const watchVision = editForm.watch("Vision" as Path<T>);
   const [mounted, setMounted] = useState(false);
@@ -116,15 +116,30 @@ export default function EditDataModule<T extends Record<string, any>>({
   const {
     loading,
     dynamicOptions,
-    updateCostCenters,
-    fetchRequiredData,
     companyDetails,
+    updateCostCenters,
     allActivity,
     allAccounts,
     allMachineGroups,
     allMachineClasses,
     AllMajorScItemGroups,
+    fetchRequiredData,
+    updateBusinessUnits,
+    udpateWarehouses,
   } = useCompanyDetailsOrOptions();
+
+  useEffect(() => {
+    if (watchCompanyName) {
+      updateCostCenters(watchCompanyName);
+      udpateWarehouses(watchCompanyName);
+      updateBusinessUnits(watchCompanyName);
+    }
+  }, [
+    watchCompanyName,
+    updateCostCenters,
+    udpateWarehouses,
+    updateBusinessUnits,
+  ]);
 
   useEffect(() => {
     if (watchAccountcode) {
@@ -208,12 +223,6 @@ export default function EditDataModule<T extends Record<string, any>>({
       }
     }
   }, [watchMachineClassCode, allMachineClasses, editForm]);
-
-  useEffect(() => {
-    if (watchCompanyName) {
-      updateCostCenters(watchCompanyName);
-    }
-  }, [watchCompanyName, updateCostCenters]);
 
   useEffect(() => {
     const requiredFields = formFields
@@ -313,12 +322,12 @@ export default function EditDataModule<T extends Record<string, any>>({
       const formattedCOIDate = coiDate
         ? new Date(coiDate).toISOString().split("T")[0]
         : undefined;
-      console.log("formatttedCeeOjIDate", formattedCOIDate);
+
       const updatedValues = {
         ...values,
         COIDate: formattedCOIDate,
       } as T;
-      console.log(updatedValues);
+
       if (includeGSTTable) {
         await onUpdate(id, updatedValues, gstData);
       } else {
@@ -380,72 +389,72 @@ export default function EditDataModule<T extends Record<string, any>>({
                 ) {
                   return null;
                 }
-                if (item.type === "date") {
-                  return (
-                    <FormField
-                      key={item.name}
-                      control={editForm.control}
-                      name={item.name}
-                      render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                          <FormLabel>{item.label}</FormLabel>
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <FormControl>
-                                <Button
-                                  variant="outline"
-                                  className={cn(
-                                    "w-[240px] pl-3 text-left font-normal",
-                                    !field.value && "text-muted-foreground"
-                                  )}
-                                >
-                                  {field.value ? (
-                                    format(new Date(field.value), "PPP")
-                                  ) : (
-                                    <span>Pick a date</span>
-                                  )}
-                                  <CalendarFold className="ml-auto h-4 w-4 opacity-50" />
-                                </Button>
-                              </FormControl>
-                            </PopoverTrigger>
-                            <PopoverContent
-                              className="w-auto p-0"
-                              align="start"
-                            >
-                              <Calendar
-                                mode="single"
-                                selected={
-                                  field.value
-                                    ? new Date(field.value)
-                                    : undefined
-                                }
-                                onSelect={(date) =>
-                                  field.onChange(date?.toISOString())
-                                }
-                                disabled={(date) =>
-                                  date > new Date() ||
-                                  date < new Date("1900-01-01")
-                                }
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  );
-                }
-
                 // if (item.type === "date") {
                 //   return (
-                //     <DatePickerField
+                //     <FormField
                 //       key={item.name}
-                //       item={item}
-                //       editForm={editForm}
+                //       control={editForm.control}
+                //       name={item.name}
+                //       render={({ field }) => (
+                //         <FormItem className="flex flex-col">
+                //           <FormLabel>{item.label}</FormLabel>
+                //           <Popover>
+                //             <PopoverTrigger asChild>
+                //               <FormControl>
+                //                 <Button
+                //                   variant="outline"
+                //                   className={cn(
+                //                     "w-[240px] pl-3 text-left font-normal",
+                //                     !field.value && "text-muted-foreground"
+                //                   )}
+                //                 >
+                //                   {field.value ? (
+                //                     format(new Date(field.value), "PPP")
+                //                   ) : (
+                //                     <span>Pick a date</span>
+                //                   )}
+                //                   <CalendarFold className="ml-auto h-4 w-4 opacity-50" />
+                //                 </Button>
+                //               </FormControl>
+                //             </PopoverTrigger>
+                //             <PopoverContent
+                //               className="w-auto p-0"
+                //               align="start"
+                //             >
+                //               <Calendar
+                //                 mode="single"
+                //                 selected={
+                //                   field.value
+                //                     ? new Date(field.value)
+                //                     : undefined
+                //                 }
+                //                 onSelect={(date) =>
+                //                   field.onChange(date?.toISOString())
+                //                 }
+                //                 disabled={(date) =>
+                //                   date > new Date() ||
+                //                   date < new Date("1900-01-01")
+                //                 }
+                //                 initialFocus
+                //               />
+                //             </PopoverContent>
+                //           </Popover>
+                //           <FormMessage />
+                //         </FormItem>
+                //       )}
                 //     />
                 //   );
                 // }
+
+                if (item.type === "date") {
+                  return (
+                    <DatePickerField
+                      key={item.name}
+                      item={item}
+                      editForm={editForm}
+                    />
+                  );
+                }
 
                 if (item.type === "select") {
                   return (

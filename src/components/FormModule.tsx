@@ -110,13 +110,24 @@ function FormModule<T extends Record<string, any>>({
     allMachineClasses,
     AllMajorScItemGroups,
     fetchRequiredData,
+    updateBusinessUnits,
+    udpateWarehouses,
+     
   } = useCompanyDetailsOrOptions();
 
   useEffect(() => {
     if (watchCompanyName) {
       updateCostCenters(watchCompanyName);
-    }
-  }, [watchCompanyName, updateCostCenters]);
+      udpateWarehouses(watchCompanyName);
+      updateBusinessUnits(watchCompanyName);
+     }
+  }, [
+   
+    watchCompanyName,
+    updateCostCenters,
+    udpateWarehouses,
+    updateBusinessUnits,
+  ]);
 
   useEffect(() => {
     if (watchAccountcode) {

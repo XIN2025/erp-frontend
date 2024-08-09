@@ -58,7 +58,7 @@ export default function ViewDataModule<T extends Record<string, any>>({
       GSTAddress: " ",
     },
   ]);
-  console.log("compnay data ", data);
+
   const extractAndSetGSTData = (formData: any) => {
     if (formData && formData.Gsts && Array.isArray(formData.Gsts)) {
       const extractedGSTData = formData.Gsts.map((gst: any) => ({

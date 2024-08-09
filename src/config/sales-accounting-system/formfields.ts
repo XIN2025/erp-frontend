@@ -36,18 +36,18 @@ export const ProjectFields: Array<{
     type: "select",
   },
   {
-    name: "CustomerGST",
-    label: "Customer GST",
+    name: "CustomerGSTNo",
+    label: "Customer GST No",
     type: "select",
   },
   {
-    name: "CostCentre",
+    name: "CostCenterName",
     label: "Cost Centre",
     type: "select",
   },
   {
-    name: "CostCentreGST",
-    label: "Cost Centre GST",
+    name: "CostCentreGSTNo",
+    label: "Cost Centre GST No",
     type: "select",
   },
   {
@@ -56,8 +56,8 @@ export const ProjectFields: Array<{
     type: "select",
   },
   {
-    name: "WareHouseGST",
-    label: "WareHouse GST",
+    name: "WareHouseGSTNo",
+    label: "WareHouse GST No",
     type: "select",
   },
   {

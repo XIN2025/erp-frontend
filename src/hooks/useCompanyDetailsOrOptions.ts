@@ -49,6 +49,9 @@ export function useCompanyDetailsOrOptions() {
   const [allMachineGroups, setAllMachineGroups] = useState<any[]>([]);
   const [allMachineClasses, setAllMachineClasses] = useState<any[]>([]);
   const [allAccounts, setAllaccounts] = useState<any[]>([]);
+  const [allBusinessUnits, setAllBusninessUnits] = useState<any[]>([]);
+  const [allWareHouses, setallWareHouses] = useState<any[]>([]);
+  const [companyGSTNo, setCompanyGSTNo] = useState<any[]>([]);
 
   const fetchRequiredData = useCallback(async (requiredFields: string[]) => {
     setLoading(true);
@@ -95,6 +98,50 @@ export function useCompanyDetailsOrOptions() {
               }));
             }
             break;
+          case "Currency":
+            response = await apiClient.get(
+              "/commonMaster/currency/allCurrency"
+            );
+
+            if (response.data.success) {
+              const activeCurrency = response.data.allCurrency
+                .filter((currency: any) => currency.Tags.includes("Active"))
+                .map((cur: any) => cur.CurrencyName);
+              setDynamicOptions((prevOptions) => ({
+                ...prevOptions,
+                Currency: activeCurrency,
+              }));
+            }
+            break;
+
+          case "CustomerName":
+            response = await apiClient.get(
+              "/commonMaster/customer/allCustomer"
+            );
+            if (response.data.success) {
+              const activeCustomers = response.data.allCustomer
+                .filter((customer: any) => customer.Tags.includes("Active"))
+                .map((customer: any) => customer.CustomerName);
+
+              setDynamicOptions((prevOptions) => ({
+                ...prevOptions,
+                CustomerName: activeCustomers,
+              }));
+            }
+            break;
+          case "WareHouse":
+            response = await apiClient.get(
+              "/commonMaster/warehouse/allWarehouse"
+            );
+
+            if (response.data.success) {
+              const activeWarehouse = response.data.allWareHouse.filter(
+                (warehouse: any) => warehouse.Tags.includes("Active")
+              );
+
+              setallWareHouses(activeWarehouse);
+            }
+            break;
           case "CostCenterName":
             response = await apiClient.get(
               "/commonMaster/costCenter/allCostCenter"
@@ -104,6 +151,17 @@ export function useCompanyDetailsOrOptions() {
                 (costCenter: any) => costCenter.Tags.includes("Active")
               );
               setAllCostCenters(activeCostCenters);
+            }
+            break;
+          case "BusinessUnit":
+            response = await apiClient.get(
+              "/commonMaster/businessUnit/allBusinessUnit"
+            );
+            if (response.data.success) {
+              const activeBusinessUnits = response.data.allBusinessUnit.filter(
+                (unit: any) => unit.Tags.includes("Active")
+              );
+              setAllBusninessUnits(activeBusinessUnits);
             }
             break;
           case "UOM":
@@ -214,6 +272,8 @@ export function useCompanyDetailsOrOptions() {
               }));
             }
             break;
+          
+
           case "AccountCode":
             response = await apiClient.get("/commonMaster/account/allAccount");
             const activeAccounts = response.data.allAccounts.filter(
@@ -273,8 +333,36 @@ export function useCompanyDetailsOrOptions() {
         CostCenterName: filteredCostCenters,
       }));
     },
+
     [allCostCenters]
   );
+  const updateBusinessUnits = useCallback(
+    (selectedCompany: string) => {
+      const filteredBusinessUnits = allBusinessUnits
+        .filter((busniessUnit) => busniessUnit.CompanyName === selectedCompany)
+        .map((busniessUnit) => busniessUnit.BusinessUnit);
+
+      setDynamicOptions((prevOptions) => ({
+        ...prevOptions,
+        BusinessUnit: filteredBusinessUnits,
+      }));
+    },
+    [allBusinessUnits]
+  );
+  const udpateWarehouses = useCallback(
+    (selectedCompany: string) => {
+      const filteredWarehouses = allWareHouses
+        .filter((warehouse) => warehouse.CompanyName === selectedCompany)
+        .map((warehouse) => warehouse.WareHouseName);
+
+      setDynamicOptions((prevOptions) => ({
+        ...prevOptions,
+        WareHouse: filteredWarehouses,
+      }));
+    },
+    [allWareHouses]
+  );
+ 
 
   return {
     loading,
@@ -286,6 +374,10 @@ export function useCompanyDetailsOrOptions() {
     AllMajorScItemGroups,
     allMachineGroups,
     allAccounts,
+    allBusinessUnits,
+    updateBusinessUnits,
     allMachineClasses,
+    udpateWarehouses,
+ 
   };
 }

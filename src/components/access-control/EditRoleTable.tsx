@@ -144,7 +144,7 @@ export const EditRoleTable: React.FC<EditRoleTableProps> = ({
     }
     closePermissionsDialog();
   };
-
+  console.log("roleData", roleData);
   return (
     <div className="w-full overflow-x-auto">
       <Table className="w-full">
