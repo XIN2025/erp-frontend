@@ -165,8 +165,8 @@ export const staticOptions = [
     values: ["Lump Sum", "Unit Rate", "Rate Contract"],
   },
   {
-    id: "ProjectStatus",
-    label: "Project Status",
+    id: "Status",
+    label: "Status",
     values: ["Active", "Inactive", "Closed"],
   },
 ];

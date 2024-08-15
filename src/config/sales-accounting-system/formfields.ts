@@ -10,11 +10,7 @@ export const ProjectFields: Array<{
     label: "Company Name",
     type: "select",
   },
-  {
-    name: "ProjectStatus",
-    label: "Project Status",
-    type: "select",
-  },
+
   {
     name: "CompanyGSTNo",
     label: "Company GST No",
@@ -139,5 +135,15 @@ export const ProjectFields: Array<{
     name: "DeliveryAddress",
     label: "Delivery Address",
     type: "text",
+  },
+  {
+    name: "ProjectCode",
+    label: "Project Code  ",
+    type: "text",
+  },
+  {
+    name: "Status",
+    label: "Project Status",
+    type: "select",
   },
 ];

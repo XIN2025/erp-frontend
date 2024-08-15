@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const projectValidators = z.object({
   CompanyName: z.string().min(1, "Company Name is required!"),
-  ProjectStatus: z.string().min(1, "Project Status is required!"),
+  Status: z.string().min(1, "Project Status is required!"),
   CompanyGSTNo: z.string().optional(),
   BusinessUnit: z.string().min(1, "Business Unit is required!"),
   Currency: z.string().min(1, "Currency is required!"),
@@ -29,6 +29,8 @@ export const projectValidators = z.object({
   InvoiceTo: z.string().min(1, "Invoice To is required!"),
   ConsigneeName: z.string().optional(),
   InvoiceAddress: z.string().min(1, "Invoice Address is required!"),
+  ProjectCode: z.string().min(1, "ProjectCode is required!"),
+
   DeliveryAddress: z.string().min(1, "Delivery Address is required!"),
 });
 

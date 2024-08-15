@@ -58,7 +58,7 @@ function Page() {
     resolver: zodResolver(projectValidators),
     defaultValues: {
       CompanyName: "",
-      ProjectStatus: "",
+
       CompanyGSTNo: "",
       BusinessUnit: "",
       Currency: "",
@@ -84,6 +84,8 @@ function Page() {
       ConsigneeName: "",
       InvoiceAddress: "",
       DeliveryAddress: "",
+      ProjectCode: "",
+      Status: "",
     },
   });
 
